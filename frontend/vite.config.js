@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'; // <--- O plugin correto para JS/JSX
 export default defineConfig({
   plugins: [react()],
   base: '/',
-  base: '/',
+
   server: {
     proxy: {
       '/api': 'http://localhost:3001'

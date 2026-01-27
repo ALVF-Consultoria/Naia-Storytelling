@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { promptAPI } from "../services/promptAPI";
 import { useTranslation } from "react-i18next";
 
-import logo from '../assets/logos/NAIA_logo_curto.png';
+import logo from '../assets/logos/naia-logo-curto.png';
 
 const IdeaLamp = ({ currentStepData }) => {
   const { t } = useTranslation();
