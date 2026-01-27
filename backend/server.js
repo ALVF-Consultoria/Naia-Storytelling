@@ -1,9 +1,8 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import path from 'path';
-import { fileURLToPath } from 'url';
+const express = require('express');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const path = require('path');
 
 // Load environment variables
 dotenv.config();
@@ -11,10 +10,6 @@ dotenv.config();
 const app = express();
 // Hostinger uses process.env.PORT
 const port = process.env.PORT || 3000;
-
-// Replicate __dirname for ES Modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 app.use(cors());
 app.use(express.json());
@@ -49,8 +44,6 @@ app.post('/api/generate', async (req, res) => {
 });
 
 // --- FRONTEND SERVING (STATIC FILES) ---
-// Serve static files from the 'public' directory (which will contain the built frontend)
-// Note: In this structure, we expect the user to copy frontend/dist -> backend/public
 const publicPath = path.join(__dirname, 'public');
 app.use(express.static(publicPath));
 
