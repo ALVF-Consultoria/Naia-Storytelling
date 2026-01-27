@@ -1,0 +1,11 @@
+{
+  "name": "naia-monorepo",
+  "version": "1.0.0",
+  "description": "Root script manager",
+  "type": "module",
+  "scripts": {
+    "build:full": "node build-app.js",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev"
+  }
+}
