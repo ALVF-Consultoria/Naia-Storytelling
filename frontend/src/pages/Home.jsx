@@ -123,7 +123,7 @@ const Home = () => {
       {/* TRAVELING LOGO */}
       <img
         ref={travelingLogoRef}
-        src="/imgs/logos/NAIA_logo_curto-reduzida.png"
+        src="/imgs/logos/naia-logo-curto-reduzida.png"
         alt="Travelling Naia"
         className="fixed z-50 pointer-events-none drop-shadow-[0_0_25px_rgba(59,130,246,0.8)] opacity-0 w-32 md:w-48"
       />
@@ -144,7 +144,7 @@ const Home = () => {
           {/* STATIC LOGO for Ref Calculation */}
           <img
             ref={staticLogoRef}
-            src="/imgs/logos/NAIA_logo_curto-reduzida.png"
+            src="/imgs/logos/naia-logo-curto-reduzida.png"
             alt="NAIA AI Logo"
             className="h-24 md:h-32 w-auto object-contain drop-shadow-[0_0_25px_rgba(59,130,246,0.6)]"
           />

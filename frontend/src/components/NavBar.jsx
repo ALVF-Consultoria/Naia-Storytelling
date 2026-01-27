@@ -35,7 +35,7 @@ const NavBar = () => {
             onClick={() => setIsOpen(false)}
           >
             <img
-              src="/imgs/logos/NAIA_logo_curto-reduzida.png"
+              src="/imgs/logos/naia-logo-curto-reduzida.png"
               alt="NAIA Logo"
               className="w-12 h-12 hover:scale-110 transition-transform duration-300"
             />
