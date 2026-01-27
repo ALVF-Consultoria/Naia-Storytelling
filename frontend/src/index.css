@@ -1,0 +1,51 @@
+@import "tailwindcss";
+@variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #020617;
+  --foreground: #ffffff;
+}
+
+html,
+body {
+  overflow: visible !important;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  @apply bg-gray-50 text-gray-900 transition-colors duration-300;
+}
+
+:root.dark body {
+  @apply bg-[#050510] text-white;
+  background-color: #050510;
+  /* Fallback */
+  color: #ffffff;
+  /* Fallback */
+}
+
+/* 3D Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.perspective-1500 {
+  perspective: 1500px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+.transform-origin-left {
+  transform-origin: left;
+}
