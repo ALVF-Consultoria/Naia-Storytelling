@@ -2,12 +2,29 @@
 import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
-import * as random from 'maath/random/dist/maath-random.esm';
+// Função para gerar pontos na esfera manualmente (evita dependência externa instável)
+function generateSphere(count, radius) {
+    const points = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+        const u = Math.random();
+        const v = Math.random();
+        const theta = 2 * Math.PI * u;
+        const phi = Math.acos(2 * v - 1);
+        const r = Math.cbrt(Math.random()) * radius; // Distribuição uniforme
+        const x = r * Math.sin(phi) * Math.cos(theta);
+        const y = r * Math.sin(phi) * Math.sin(theta);
+        const z = r * Math.cos(phi);
+        points[i * 3] = x;
+        points[i * 3 + 1] = y;
+        points[i * 3 + 2] = z;
+    }
+    return points;
+}
 
 function Stars(props) {
     const ref = useRef();
     // Cria 5000 partículas em uma esfera de raio 1.2
-    const sphere = useMemo(() => random.inSphere(new Float32Array(5000), { radius: 1.2 }), []);
+    const sphere = useMemo(() => generateSphere(5000, 1.2), []);
 
     useFrame((state, delta) => {
         ref.current.rotation.x -= delta / 10;
