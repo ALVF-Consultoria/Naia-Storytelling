@@ -30,7 +30,7 @@ const NavBar = () => {
         {!isHome ? (
           <Link
             to="/"
-            className="flex items-center text-xl font-bold opacity-0 animate-fadeIn"
+            className="flex items-center text-xl font-bold"
             style={{ animationFillMode: 'forwards' }}
             onClick={() => setIsOpen(false)}
           >

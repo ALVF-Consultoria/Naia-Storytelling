@@ -14,6 +14,8 @@ gsap.registerPlugin(ScrollTrigger);
 const Home = () => {
   const { t } = useTranslation();
 
+  const [logoLoaded, setLogoLoaded] = React.useState(false);
+
   // Refs for Logo Scrollytelling
   const travelingLogoRef = useRef(null);
   const staticLogoRef = useRef(null);
@@ -25,10 +27,14 @@ const Home = () => {
   const containerRef = useRef(null);
 
   useLayoutEffect(() => {
+    if (!logoLoaded) return; // Wait for image to load
+
     const ctx = gsap.context(() => {
       // 1. Initial Setup: Align Traveling Logo with Static Logo
       if (staticLogoRef.current && travelingLogoRef.current) {
         const staticRect = staticLogoRef.current.getBoundingClientRect();
+
+        // Force initial state immediately
         gsap.set(travelingLogoRef.current, {
           top: staticRect.top,
           left: staticRect.left,
@@ -37,7 +43,9 @@ const Home = () => {
           xPercent: 0,
           yPercent: 0,
           position: "fixed",
-          opacity: 1 // Reveal it
+          zIndex: 9999, // Ensure it's on top
+          opacity: 1,   // Explicitly visible
+          display: "block"
         });
 
         // Hide static logo
@@ -53,7 +61,6 @@ const Home = () => {
         }
       });
 
-      // --- PHASE 1: Hero -> Orbit (Right Side) ---
       // --- PHASE 1: Hero -> Orbit (Right Side) ---
       // Hardcoded Start Position (Center Screen) to prevent Jumps
       tl.fromTo(travelingLogoRef.current, {
@@ -98,10 +105,9 @@ const Home = () => {
         ease: "none"
       });
 
+
       // --- PHASE 5: Dive into Button ---
       // Final movement to footer button
-
-
       tl.to(travelingLogoRef.current, {
         top: "90%",
         left: "50%",
@@ -115,7 +121,7 @@ const Home = () => {
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [logoLoaded]); // Re-run when loaded
 
   return (
     <div ref={containerRef} className="relative min-h-screen flex flex-col bg-[#050510] text-white overflow-hidden selection:bg-blue-500 selection:text-white">
@@ -125,7 +131,8 @@ const Home = () => {
         ref={travelingLogoRef}
         src="/imgs/logos/naia-logo-curto-reduzida.png"
         alt="Travelling Naia"
-        className="fixed z-50 pointer-events-none drop-shadow-[0_0_25px_rgba(59,130,246,0.8)] opacity-0 w-32 md:w-48"
+        onLoad={() => setLogoLoaded(true)}
+        className={`fixed z-50 pointer-events-none drop-shadow-[0_0_25px_rgba(59,130,246,0.8)] w-32 md:w-48 transition-opacity duration-300 ${logoLoaded ? 'opacity-100' : 'opacity-0'}`}
       />
 
       {/* 3D Background */}
