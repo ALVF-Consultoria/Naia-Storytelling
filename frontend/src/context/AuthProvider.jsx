@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "";
+
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(null);
@@ -13,7 +15,7 @@ export function AuthProvider({ children }) {
             
             if (storedToken) {
                 try {
-                    const response = await fetch("/api/auth/me", {
+                    const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
                         headers: { "Authorization": `Bearer ${storedToken}` }
                     });
 
@@ -43,7 +45,7 @@ export function AuthProvider({ children }) {
 
     const login = async (email, password) => {
         try {
-            const response = await fetch("/api/auth/login", {
+            const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password })
@@ -72,7 +74,7 @@ export function AuthProvider({ children }) {
 
     const register = async (username, email, password) => {
         try {
-            const response = await fetch("/api/auth/register", {
+            const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, email, password })

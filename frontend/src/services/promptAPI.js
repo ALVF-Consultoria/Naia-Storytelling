@@ -1,22 +1,18 @@
 // --- VARIÁVEIS GLOBAIS DA API ---
-// Agora aponta para o backend local (Vercel ou similar)
-const API_URL = "/api/generate";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "";
+const API_URL = `${API_BASE_URL}/api/generate`;
 
 // --- FUNÇÕES DE CHECKAGEM E CRIAÇÃO ---
 
 /**
  * Verifica a disponibilidade do modelo.
- * No caso da API Cloud, assumimos que está 'ready' se a chave estiver configurada no backend.
  */
 export async function checkModelAvailability() {
-    // Para simplificar a migração e manter compatibilidade com componentes existentes,
-    // retornamos 'ready' simulando que o modelo está pronto.
-    // O erro real aparecerá na hora de gerar se a chave estiver faltando.
     return "ready";
 }
 
 /**
- * Função principal para enviar um prompt, agora via API.
+ * Função principal para enviar um prompt.
  */
 export async function promptAPI(promptText, visualStyle = "Cinematográfico") {
     try {
@@ -44,11 +40,10 @@ export async function promptAPI(promptText, visualStyle = "Cinematográfico") {
         }
 
         const data = await response.json();
-        // Retornamos tudo agora: text, chapters, title, etc.
         return data;
     } catch (err) {
         console.error("Erro na promptAPI:", err);
-        return `[ERRO] Falha ao comunicar com a IA: ${err.message}. Verifique se a chave de API está configurada e o backend rodando.`;
+        throw err; // Agora lançamos o erro para o componente tratar
     }
 }
 

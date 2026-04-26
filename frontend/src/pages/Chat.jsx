@@ -17,7 +17,6 @@ const Chat = () => {
     }, []);
 
     const handleSendPrompt = async () => {
-        setPromptInput('');
         if (!promptInput.trim() || isProcessing || modelState !== 'ready') return;
 
         setIsProcessing(true);
@@ -26,6 +25,7 @@ const Chat = () => {
         try {
             const res = await promptAPI(promptInput);
             setResponse(res);
+            setPromptInput(''); // Limpa apenas após o sucesso
         } catch (error) {
             console.error("Erro ao chamar promptAPI:", error);
             setResponse("Erro inesperado ao processar o prompt.");

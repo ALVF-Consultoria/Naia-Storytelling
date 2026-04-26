@@ -9,6 +9,8 @@ import ThemeToggle from "../components/ThemeToggle";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../hooks/useAuth";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "";
+
 const StoriesPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -27,7 +29,7 @@ const StoriesPage = () => {
   useEffect(() => {
     const fetchStories = async () => {
       try {
-        const res = await fetch("/api/stories", {
+        const res = await fetch(`${API_BASE_URL}/api/stories`, {
           headers: {
             "Authorization": `Bearer ${token}`
           }
@@ -54,7 +56,7 @@ const StoriesPage = () => {
   const confirmDelete = async () => {
     if (storyToDelete && token) {
       try {
-        const res = await fetch(`/api/stories/${storyToDelete}`, {
+        const res = await fetch(`${API_BASE_URL}/api/stories/${storyToDelete}`, {
           method: "DELETE",
           headers: {
             "Authorization": `Bearer ${token}`
@@ -158,7 +160,7 @@ const StoriesPage = () => {
       // Simulação de progresso para UX
       setTranslationProgress(10);
       
-      const response = await fetch(`/api/stories/${selectedStory.id}/translate`, {
+      const response = await fetch(`${API_BASE_URL}/api/stories/${selectedStory.id}/translate`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
