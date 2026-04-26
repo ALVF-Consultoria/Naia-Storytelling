@@ -1,7 +1,9 @@
 // src/components/TopWizardProgress.jsx
 import React from "react";
 import { CheckCircle, Circle, ChevronRight } from "lucide-react";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 /**
  * Props:
@@ -10,6 +12,7 @@ import { motion } from "framer-motion";
  */
 const TopWizardProgress = ({ steps = [], current = 1 }) => {
   const total = steps.length;
+  const { t } = useTranslation();
 
   return (
     <div className="w-full relative overflow-hidden">
@@ -35,9 +38,9 @@ const TopWizardProgress = ({ steps = [], current = 1 }) => {
                   <div
                     className={`w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-colors duration-300
                       ${state === "completed"
-                        ? "bg-gradient-to-br from-cyan-400 via-indigo-500 to-purple-600 text-white"
+                        ? "bg-linear-to-br from-cyan-400 via-indigo-500 to-purple-600 text-white"
                         : state === "active"
-                          ? "bg-gradient-to-br from-cyan-400/30 via-indigo-400/30 to-purple-500/30 text-blue-600 dark:text-white ring-2 ring-blue-400 dark:ring-cyan-400/40 backdrop-blur-sm"
+                          ? "bg-linear-to-br from-cyan-400/30 via-indigo-400/30 to-purple-500/30 text-blue-600 dark:text-white ring-2 ring-blue-400 dark:ring-cyan-400/40 backdrop-blur-sm"
                           : "bg-gray-200 dark:bg-white/20 text-gray-400 dark:text-gray-300"
                       }`}
                     style={{
@@ -57,7 +60,7 @@ const TopWizardProgress = ({ steps = [], current = 1 }) => {
                     className={`text-xs mt-1  text-center truncate transition-colors duration-300 ${state === "active" ? "text-blue-600 dark:text-cyan-400 font-bold" : state === "completed" ? "text-gray-800 dark:text-white" : "text-gray-400 dark:text-gray-400"
                       }`}
                   >
-                    {s.title}
+                    {s.id ? t(`create_story.steps.${s.id}`, { defaultValue: s.title }) : s.title}
                   </span>
 
                   {/* Connector line */}
@@ -81,12 +84,12 @@ const TopWizardProgress = ({ steps = [], current = 1 }) => {
           {/* Mobile Steps */}
           <div className="sm:hidden flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 via-indigo-500 to-purple-600 text-white shadow-lg">
+              <div className="w-10 h-10 flex items-center justify-center rounded-full bg-linear-to-br from-cyan-400 via-indigo-500 to-purple-600 text-white shadow-lg">
                 <CheckCircle size={16} />
               </div>
               <div>
                 <div className="text-sm font-semibold text-gray-900 dark:text-white">{`Step ${current} of ${total}`}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-300">{steps[Math.max(0, current - 1)]?.title || ""}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-300">{steps[Math.max(0, current - 1)]?.id ? t(`create_story.steps.${steps[Math.max(0, current - 1)].id}`, { defaultValue: steps[Math.max(0, current - 1)].title }) : steps[Math.max(0, current - 1)]?.title || ""}</div>
               </div>
             </div>
             <div className="text-sm text-gray-400 dark:text-gray-300 font-medium">
@@ -97,7 +100,7 @@ const TopWizardProgress = ({ steps = [], current = 1 }) => {
           {/* Neon progress bar */}
           <div className="mt-2 h-2 w-full rounded-full bg-gray-200 dark:bg-white/20 relative overflow-hidden">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-cyan-400 via-indigo-500 to-purple-600"
+              className="h-full rounded-full bg-linear-to-r from-cyan-400 via-indigo-500 to-purple-600"
               style={{
                 width: `${Math.min(100, Math.round(((current - 1) / (total - 1 || 1)) * 100))}%`,
                 transition: "width 400ms ease",
