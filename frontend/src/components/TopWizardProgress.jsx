@@ -88,7 +88,7 @@ const TopWizardProgress = ({ steps = [], current = 1 }) => {
                 <CheckCircle size={16} />
               </div>
               <div>
-                <div className="text-sm font-semibold text-gray-900 dark:text-white">{`Step ${current} of ${total}`}</div>
+                <div className="text-sm font-semibold text-gray-900 dark:text-white">{t('create_story.buttons.step_of', { current, total, defaultValue: `Passo ${current} de ${total}` })}</div>
                 <div className="text-xs text-gray-500 dark:text-gray-300">{steps[Math.max(0, current - 1)]?.id ? t(`create_story.steps.${steps[Math.max(0, current - 1)].id}`, { defaultValue: steps[Math.max(0, current - 1)].title }) : steps[Math.max(0, current - 1)]?.title || ""}</div>
               </div>
             </div>

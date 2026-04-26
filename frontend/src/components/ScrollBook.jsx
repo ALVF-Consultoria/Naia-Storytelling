@@ -45,87 +45,92 @@ const ScrollBook = () => {
                 scrollTrigger: {
                     trigger: containerRef.current,
                     start: "center center",
-                    end: "+=4000",
+                    end: "+=5000", // Increased for more scroll headroom at the end
                     pin: true,
                     scrub: 1,
                 }
             });
 
             // 0. Sparkles & Centering
-            // Ao abrir (-180deg), o livro cresce para a esquerda. Movemos para a direita para compensar.
             tl.to(bookRef.current, { x: 150, z: 50, rotateX: 10, rotateY: -5, duration: 2 }, 0);
             tl.to(sparkleRef.current, { opacity: 1, duration: 0.5 }, 0);
 
             // 1. Abre a capa (Page 0)
             tl.to(pagesRef.current[0], {
                 rotateY: -180,
+                z: 2, 
                 duration: 2,
                 ease: "power2.inOut",
-                onStart: () => gsap.set(pagesRef.current[0], { zIndex: 50 }),
-                onComplete: () => gsap.set(pagesRef.current[0], { zIndex: 1 })
             }, 0);
+            tl.set(pagesRef.current[0], { zIndex: 1 }, ">");
 
             // 2. Vira página 1 (Page 1)
             tl.to(pagesRef.current[1], {
                 rotateY: -180,
+                z: 1,
                 duration: 2,
                 ease: "power2.inOut",
-                onStart: () => gsap.set(pagesRef.current[1], { zIndex: 9 }),
-                onComplete: () => gsap.set(pagesRef.current[1], { zIndex: 2 })
-            }, ">-0.5");
+            }, ">-0.8");
+            tl.set(pagesRef.current[1], { zIndex: 2 }, ">");
 
             // 3. Vira página 2 (Page 2)
             tl.to(pagesRef.current[2], {
                 rotateY: -180,
+                z: 0.5,
                 duration: 2,
                 ease: "power2.inOut",
-                onStart: () => gsap.set(pagesRef.current[2], { zIndex: 8 }),
-                onComplete: () => gsap.set(pagesRef.current[2], { zIndex: 3 })
-            }, ">-0.5");
+            }, ">-0.8");
+            tl.set(pagesRef.current[2], { zIndex: 3 }, ">");
 
             // --- FECHAMENTO (Closing Sequence) ---
-            const closeTime = ">+1"; // Pausa para leitura
+            const closeTime = ">+1";
 
             // Fecha Page 2
             tl.to(pagesRef.current[2], {
                 rotateY: 0,
+                z: 0,
                 duration: 1.5,
                 ease: "power2.inOut",
-                onStart: () => gsap.set(pagesRef.current[2], { zIndex: 8 }),
-                onComplete: () => gsap.set(pagesRef.current[2], { zIndex: 3 })
             }, closeTime);
+            tl.set(pagesRef.current[2], { zIndex: 20 }, ">");
 
             // Fecha Page 1
             tl.to(pagesRef.current[1], {
                 rotateY: 0,
+                z: 0,
                 duration: 1.5,
                 ease: "power2.inOut",
-                onStart: () => gsap.set(pagesRef.current[1], { zIndex: 9 }),
-                onComplete: () => gsap.set(pagesRef.current[1], { zIndex: 2 })
             }, ">-1");
+            tl.set(pagesRef.current[1], { zIndex: 30 }, ">");
 
             // Fecha Capa e Centraliza de volta
             tl.to(pagesRef.current[0], {
                 rotateY: 0,
+                z: 0,
                 duration: 1.5,
                 ease: "power2.inOut",
-                onStart: () => gsap.set(pagesRef.current[0], { zIndex: 20 }),
-                onComplete: () => gsap.set(pagesRef.current[0], { zIndex: 20 })
             }, ">-1");
+            tl.set(pagesRef.current[0], { zIndex: 40 }, ">");
 
-            tl.to(bookRef.current, { x: 0, z: 0, rotateX: 0, rotateY: 0, duration: 1.5 }, "<"); // Volta pro centro
+            tl.to(bookRef.current, { x: 0, z: 0, rotateX: 0, rotateY: 0, duration: 1.5 }, "<");
 
         }, containerRef);
 
         return () => ctx.revert();
     }, []);
 
-    // Universe Styles (Internal CSS for quick theme)
+    // Universe Styles
     const coverStyle = "bg-gradient-to-br from-indigo-950 via-purple-900 to-black border-2 border-blue-400/30";
     const universePageStyle = "bg-gradient-to-br from-[#0a0a2a] via-[#1a1a4a] to-black text-white border-r border-blue-500/30";
+    const pStyle = "text-blue-200/80 font-serif leading-relaxed text-xs sm:text-sm max-h-[150px] sm:max-h-[250px] overflow-y-auto pr-2 custom-scrollbar";
 
     return (
-        <div ref={containerRef} className="relative h-100vh w-full flex items-center justify-center bg-[#050510] perspective-[1500px] overflow-hidden">
+        <div ref={containerRef} className="relative h-screen w-full flex items-center justify-center bg-[#050510] perspective-[1500px] overflow-hidden">
+            <style>{`
+                .custom-scrollbar::-webkit-scrollbar { width: 3px; }
+                .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+                .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(59,130,246,0.3); borderRadius: 10px; }
+            `}</style>
 
             <div
                 ref={bookRef}
@@ -142,73 +147,73 @@ const ScrollBook = () => {
                     className="absolute inset-0 transform-origin-left transform-style-3d z-40"
                 >
                     {/* Frente da Capa */}
-                    <div className={`absolute inset-0 ${coverStyle} rounded-r-lg flex flex-col items-center justify-center p-8 text-center backface-hidden shadow-inner`}>
+                    <div className={`absolute inset-0 ${coverStyle} rounded-r-lg flex flex-col items-center justify-center p-6 sm:p-8 text-center backface-hidden shadow-inner`}>
                         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30"></div>
-                        <div className="text-6xl mb-4 drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">🌌</div>
-                        <h2 className="text-3xl font-serif font-bold text-white border-b-2 border-blue-500 pb-2 drop-shadow-md">{t('book.cover_title')}</h2>
-                        <p className="mt-4 text-blue-200 text-sm italic">{t('book.cover_subtitle')}</p>
+                        <div className="text-4xl sm:text-6xl mb-4 drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">📖</div>
+                        <h2 className="text-xl sm:text-3xl font-serif font-bold text-white border-b-2 border-blue-500 pb-2 drop-shadow-md">{t('book.cover_title')}</h2>
+                        <p className="mt-4 text-blue-200 text-xs sm:text-sm italic">{t('book.cover_subtitle')}</p>
                     </div>
                     {/* Verso da Capa */}
                     <div className={`absolute inset-0 ${universePageStyle} rounded-l-lg transform rotate-y-180 backface-hidden flex items-center justify-center p-8`}>
                         <div className="text-center">
-                            <div className="text-4xl mb-2">🚀</div>
-                            <p className="text-blue-300 text-xs uppercase tracking-widest">Adventure Begins</p>
+                            <div className="text-4xl mb-2">✨</div>
+                            <p className="text-blue-300 text-[10px] sm:text-xs uppercase tracking-widest font-bold">{t('book.start_journey', { defaultValue: 'Início da Jornada' })}</p>
                         </div>
                     </div>
                 </div>
 
-                {/* --- PÁGINA 1 (Vivid Imagery - Universe Textures) --- */}
+                {/* --- PÁGINA 1 --- */}
                 <div
                     ref={el => pagesRef.current[1] = el}
                     className="absolute inset-0 transform-origin-left transform-style-3d z-30"
                 >
                     {/* Frente Pag 1 */}
-                    <div className={`absolute inset-0 ${universePageStyle} rounded-r-sm flex flex-col items-center justify-center p-8 text-center backface-hidden`}>
+                    <div className={`absolute inset-0 ${universePageStyle} rounded-r-sm flex flex-col items-center justify-center p-6 sm:p-8 text-center backface-hidden`}>
                         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
-                        <div className="text-5xl mb-4 text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]">🎨</div>
-                        <h3 className="text-2xl font-serif font-bold text-blue-100 mb-2">{t('book.page1_title')}</h3>
-                        <p className="text-blue-200/80 font-serif leading-relaxed text-sm">{t('book.page1_text')}</p>
-                        <span className="absolute bottom-4 text-blue-500/50 text-xs">1</span>
+                        <div className="text-3xl sm:text-5xl mb-4 text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]">🪄</div>
+                        <h3 className="text-lg sm:text-2xl font-serif font-bold text-blue-100 mb-2">{t('book.page1_title')}</h3>
+                        <p className={pStyle}>{t('book.page1_text')}</p>
+                        <span className="absolute bottom-4 text-blue-500/50 text-[10px] italic">I</span>
                     </div>
                     {/* Verso Pag 1 */}
                     <div className={`absolute inset-0 ${universePageStyle} border-l border-blue-500/30 rounded-l-sm transform rotate-y-180 backface-hidden flex items-center justify-center p-8`}>
                         <div className="w-full h-full border border-dashed border-blue-500/30 rounded flex items-center justify-center bg-blue-900/10">
-                            <span className="text-blue-400 text-xs">Nebula Chart</span>
+                            <span className="text-blue-400 text-[10px] sm:text-xs font-serif italic">{t('book.nebula_chart', { defaultValue: 'Mapa das Estrelas' })}</span>
                         </div>
-                        <span className="absolute bottom-4 text-blue-500/50 text-xs">2</span>
+                        <span className="absolute bottom-4 text-blue-500/50 text-[10px] italic">II</span>
                     </div>
                 </div>
 
-                {/* --- PÁGINA 2 (Deep Logic - Data Universe) --- */}
+                {/* --- PÁGINA 2 --- */}
                 <div
                     ref={el => pagesRef.current[2] = el}
                     className="absolute inset-0 transform-origin-left transform-style-3d z-20"
                 >
                     {/* Frente Pag 2 */}
-                    <div className={`absolute inset-0 ${universePageStyle} rounded-r-sm flex flex-col items-center justify-center p-8 text-center backface-hidden`}>
+                    <div className={`absolute inset-0 ${universePageStyle} rounded-r-sm flex flex-col items-center justify-center p-6 sm:p-8 text-center backface-hidden`}>
                         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-                        <div className="text-5xl mb-4 text-purple-400 drop-shadow-[0_0_10px_rgba(192,132,252,0.8)]">🧠</div>
-                        <h3 className="text-2xl font-serif font-bold text-purple-100 mb-2">{t('book.page2_title')}</h3>
-                        <p className="text-purple-200/80 font-serif leading-relaxed text-sm">{t('book.page2_text')}</p>
-                        <span className="absolute bottom-4 text-purple-500/50 text-xs">3</span>
+                        <div className="text-3xl sm:text-5xl mb-4 text-purple-400 drop-shadow-[0_0_10px_rgba(192,132,252,0.8)]">🔮</div>
+                        <h3 className="text-lg sm:text-2xl font-serif font-bold text-purple-100 mb-2">{t('book.page2_title')}</h3>
+                        <p className={pStyle}>{t('book.page2_text')}</p>
+                        <span className="absolute bottom-4 text-purple-500/50 text-[10px] italic">III</span>
                     </div>
                     {/* Verso Pag 2 */}
                     <div className={`absolute inset-0 ${universePageStyle} border-l border-purple-500/30 rounded-l-sm transform rotate-y-180 backface-hidden flex items-center justify-center p-8`}>
                         <div className="w-full h-full border border-dashed border-purple-500/30 rounded flex items-center justify-center bg-purple-900/10">
-                            <span className="text-purple-400 text-xs">Neural Network</span>
+                            <span className="text-purple-400 text-[10px] sm:text-xs font-serif italic">{t('book.neural_essence', { defaultValue: 'Essência da Mente' })}</span>
                         </div>
-                        <span className="absolute bottom-4 text-purple-500/50 text-xs">4</span>
+                        <span className="absolute bottom-4 text-purple-500/50 text-[10px] italic">IV</span>
                     </div>
                 </div>
 
-                {/* --- CONTRACAPA (Final) --- */}
-                <div className={`absolute inset-0 bg-black z-10 flex flex-col items-center justify-center p-8 text-center border-l border-gray-800 rounded-r-sm`}>
+                {/* --- CONTRACAPA --- */}
+                <div className={`absolute inset-0 bg-[#050510] z-10 flex flex-col items-center justify-center p-6 sm:p-8 text-center border-l border-white/5 rounded-r-sm`}>
                     <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
-                    <div className="text-5xl mb-4 text-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.8)]">⚡</div>
-                    <h3 className="text-2xl font-serif font-bold text-white mb-2">{t('book.page3_title')}</h3>
-                    <p className="text-gray-300 font-serif leading-relaxed text-sm">{t('book.page3_text')}</p>
-                    <div className="mt-8 pt-4 border-t border-gray-800 w-full relative z-10">
-                        <p className="text-xs font-bold text-blue-400 uppercase tracking-widest">{t('book.back_text')}</p>
+                    <div className="text-3xl sm:text-5xl mb-4 text-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.8)]">🏺</div>
+                    <h3 className="text-lg sm:text-2xl font-serif font-bold text-white mb-2">{t('book.page3_title')}</h3>
+                    <p className={pStyle.replace('blue', 'gray')}>{t('book.page3_text')}</p>
+                    <div className="mt-4 sm:mt-8 pt-4 border-t border-white/10 w-full relative z-10">
+                        <p className="text-[10px] sm:text-xs font-bold text-blue-400 uppercase tracking-widest">{t('book.back_text')}</p>
                     </div>
                 </div>
 

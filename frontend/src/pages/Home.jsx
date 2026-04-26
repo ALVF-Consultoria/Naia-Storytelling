@@ -222,7 +222,6 @@ const Home = () => {
 
       {/* Book Section */}
       <section ref={bookRef} className="relative z-10 py-0 text-center">
-        {/* Note: I added text-center here just in case, keeping original layout mostly */}
         <ScrollBook />
       </section>
 

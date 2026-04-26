@@ -72,10 +72,7 @@ const NavBar = () => {
             </Link>
           ))}
 
-          {/* Language Toggle */}
-          <div className="border-r border-muted/20 pr-6 mr-2 flex items-center h-8">
-            <LanguageToggle />
-          </div>
+
 
           {/* User Profile Area */}
           {user ? (
@@ -143,6 +140,10 @@ const NavBar = () => {
               </Link>
             )
           )}
+          {/* Language Toggle (Right Side) */}
+          <div className="pl-6 ml-2 border-l border-muted/20 flex items-center h-8">
+            <LanguageToggle />
+          </div>
         </div>
 
         {/* MOBILE MENU BUTTON */}

@@ -152,7 +152,7 @@ const HistoryView = () => {
           <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-white/5 pt-10">
             <button
               onClick={() => navigate("/flipbook")}
-              className="w-full py-4 bg-magic text-primary font-bold rounded-xl hover:shadow-[0_0_20px_rgba(139,92,246,0.5)] transition-all duration-300 ease-out hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2"
+              className="w-full py-4 bg-magic text-primary font-bold rounded-xl hover:shadow-[0_0_20px_rgba(139,92,246,0.5)] transition-all duration-300 ease-out hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2 hidden md:flex"
             >
               📚 Livro Animado
             </button>

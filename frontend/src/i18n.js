@@ -7,7 +7,7 @@ const resources = {
   en: {
     translation: {
       hero: {
-        powered: "Powered by Gemini 2.5 Flash",
+        powered: "Driven by Infinite Imagination",
         title_prefix: "NAIA",
         title_suffix: "AI",
         subtitle: "Forging infinite worlds from a single spark of imagination.",
@@ -19,9 +19,9 @@ const resources = {
         vivid_imagery: "Vivid Imagery",
         vivid_imagery_desc: "Our engine describes scenes with such detail you can almost see them.",
         deep_logic: "Deep Logic",
-        deep_logic_desc: "Powered by Gemini 2.5, characters remember details and act consistently.",
+        deep_logic_desc: "Our advanced technology ensures characters remember details and act consistently.",
         instant_speed: "Instant Speed",
-        instant_speed_desc: "Generate entire chapters in seconds with our optimized cloud backend.",
+        instant_speed_desc: "Generate entire chapters in seconds with our optimized creative infrastructure.",
         ready_creator: "Ready to become\na",
         creator_highlight: "Creator?",
         launch_studio: "Launch Studio"
@@ -46,9 +46,9 @@ const resources = {
         page1_title: "Vivid Imagery",
         page1_text: "Our engine describes scenes with such detail you can almost see them.",
         page2_title: "Deep Logic",
-        page2_text: "Powered by Gemini 2.5, characters remember details and act consistently.",
+        page2_text: "Our advanced intelligence ensures characters remember details and act consistently.",
         page3_title: "Instant Speed",
-        page3_text: "Generate entire chapters in seconds with our optimized cloud backend.",
+        page3_text: "Generate entire chapters in seconds with our optimized creative infrastructure.",
         back_text: "Start your story now."
       },
       create_story: {
@@ -89,7 +89,8 @@ const resources = {
           finish: "Finish Draft",
           restart: "Restart",
           generate: "Generate Story",
-          generating: "Generating Story..."
+          generating: "Generating Story...",
+          step_of: "Step {{current}} of {{total}}"
         },
         summary: {
           title: "🎉 Story Draft Completed!",
@@ -140,6 +141,41 @@ const resources = {
         password_label: "ACCESS KEY (PASSWORD)",
         password_placeholder: "••••••••",
         submit: "Consecrate Registration ✦"
+      },
+      selection: {
+        title: "How do you want to create your <0>story</0>?",
+        story_word: "story",
+        subtitle: "Choose the path that best suits your creativity today.",
+        form_title: "Magic Form",
+        form_desc: "The traditional method. Fill in the fields step-by-step and define every detail of your world.",
+        form_btn: "Start now",
+        chat_title: "Chat with Naia",
+        chat_desc: "An interactive experience. Tell Naia your idea and she will ask the right questions.",
+        chat_btn: "Have a chat",
+        footer: "Different paths, same result"
+      },
+      chat: {
+        intro: "Hello! I am Naia, your creative companion. Let's build a legendary world together! ✨\n\nTo start our journey, **what is the name of our protagonist?**",
+        phase_prefix: "Fascinating. Now let's dive into: **{{title}}**.",
+        completion: "Magnificent! I have everything I need to forge your narrative. Shall we give life to this story now?",
+        style_selected: "An inspired choice! Everything is ready. Let's begin the generation process!",
+        input_placeholder: "Tell me more...",
+        input_hint: "Naia is listening. Press Enter to share your thought.",
+        questions: {
+          protagonistName: "What shall we call our hero?",
+          protagonistDescription: "Tell me, what do they look like? What is their essence?",
+          protagonistGoal: "What is the great dream or goal driving them forward?",
+          antagonistNature: "Every hero needs a challenge. Who or what stands in their way?",
+          conflictStartingPoint: "How did this all begin? What was the spark that changed everything?",
+          settingLocation: "Where does this adventure take place? Describe the world to me.",
+          settingTime: "In what era or year does this chronicle unfold?",
+          settingTone: "What is the 'soul' of this story? Is it dark and heavy, or light and hopeful?",
+          storyLanguage: "In which language should I weave this narrative?",
+          plotObstacle: "What is the greatest wall they will have to climb during the journey?",
+          plotClimax: "The moment of truth! How will the final, epic confrontation be?",
+          themeMessage: "When the dust settles, what is the lesson or message this story leaves behind?",
+          visualStyle: "To finish in style, which artistic look best matches this universe?"
+        }
       }
     }
   },
@@ -158,9 +194,9 @@ const resources = {
         vivid_imagery: "Imagens Vívidas",
         vivid_imagery_desc: "Nosso motor descreve cenas com tanto detalhe que você quase pode vê-las.",
         deep_logic: "Lógica Profunda",
-        deep_logic_desc: "Com Gemini 2.5, personagens lembram detalhes e agem com consistência.",
+        deep_logic_desc: "Nossa tecnologia avançada garante que personagens lembrem detalhes e ajam com consistência.",
         instant_speed: "Velocidade Instantânea",
-        instant_speed_desc: "Gere capítulos inteiros em segundos com nosso backend otimizado.",
+        instant_speed_desc: "Gere capítulos inteiros em segundos com nossa infraestrutura criativa otimizada.",
         ready_creator: "Pronto para ser\num",
         creator_highlight: "Criador?",
         launch_studio: "Abrir Estúdio"
@@ -185,9 +221,9 @@ const resources = {
         page1_title: "Imagens Vívidas",
         page1_text: "Nosso motor descreve cenas com tanto detalhe que você quase pode vê-las.",
         page2_title: "Lógica Profunda",
-        page2_text: "Com Gemini 2.5, personagens lembram detalhes e agem com consistência.",
+        page2_text: "Nossa inteligência avançada garante que personagens lembrem detalhes e ajam com consistência.",
         page3_title: "Velocidade Instantânea",
-        page3_text: "Gere capítulos inteiros em segundos com nosso backend otimizado.",
+        page3_text: "Gere capítulos inteiros em segundos com nossa infraestrutura criativa otimizada.",
         back_text: "Comece sua história agora."
       },
       create_story: {
@@ -228,7 +264,8 @@ const resources = {
           finish: "Imprimir Rascunho",
           restart: "Reiniciar",
           generate: "Gerar História",
-          generating: "Gerando História..."
+          generating: "Gerando História...",
+          step_of: "Passo {{current}} de {{total}}"
         },
         summary: {
           title: "🎉 Rascunho da História Concluído!",
@@ -279,6 +316,41 @@ const resources = {
         password_label: "CHAVE DE ACESSO (SENHA)",
         password_placeholder: "••••••••",
         submit: "Consagrar Registro ✦"
+      },
+      selection: {
+        title: "Como deseja criar sua <0>história</0>?",
+        story_word: "história",
+        subtitle: "Escolha o caminho que mais combina com sua criatividade hoje.",
+        form_title: "Formulário Mágico",
+        form_desc: "O método tradicional. Preencha os campos passo a passo e defina cada detalhe do seu mundo.",
+        form_btn: "Começar agora",
+        chat_title: "Conversar com Naia",
+        chat_desc: "Uma experiência interativa. Conte sua ideia para a Naia e ela fará as perguntas certas.",
+        chat_btn: "Bater um papo",
+        footer: "Caminhos diferentes, mesmo resultado"
+      },
+      chat: {
+        intro: "Olá! Eu sou a Naia, sua companheira criativa. Vamos construir um mundo lendário juntos! ✨\n\nPara iniciarmos nossa jornada, **como se chama o nosso protagonista?**",
+        phase_prefix: "Fascinante. Agora, vamos mergulhar em: **{{title}}**.",
+        completion: "Magnífico! Já tenho tudo o que preciso para forjar sua narrativa. Vamos dar vida a essa história agora?",
+        style_selected: "Uma escolha inspirada! Tudo pronto. Vamos iniciar o processo de geração!",
+        input_placeholder: "Conte-me mais...",
+        input_hint: "A Naia está ouvindo. Pressione Enter para compartilhar sua ideia.",
+        questions: {
+          protagonistName: "Qual será o nome do nosso herói?",
+          protagonistDescription: "Me diga, como ele é fisicamente? Qual a sua essência?",
+          protagonistGoal: "Qual o grande sonho ou objetivo que o move adiante?",
+          antagonistNature: "Todo herói precisa de um desafio. Quem ou o que está no caminho dele?",
+          conflictStartingPoint: "Como tudo isso começou? Qual foi a faísca que mudou tudo?",
+          settingLocation: "Onde essa aventura acontece? Me descreva esse mundo.",
+          settingTime: "Em que época ou ano essa crônica se desenrola?",
+          settingTone: "Qual é a 'alma' dessa história? É algo sombrio e denso, ou leve e esperançoso?",
+          storyLanguage: "Em qual idioma você deseja que eu escreva essa narrativa?",
+          plotObstacle: "Qual a maior barreira que eles terão que escalar durante a jornada?",
+          plotClimax: "A hora da verdade! Como será o grande e épico confronto final?",
+          themeMessage: "Quando a poeira baixar, qual a lição ou mensagem que essa história deixa?",
+          visualStyle: "Para fecharmos com chave de ouro, qual estilo artístico mais combina com esse universo?"
+        }
       }
     }
   }

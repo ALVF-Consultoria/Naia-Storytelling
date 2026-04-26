@@ -44,7 +44,7 @@ const StoryCard = ({
         <div className="flex gap-1">
           <button
             onClick={() => onOpenFlipbook(story)}
-            className="p-2 text-secondary hover:bg-surface-light rounded-lg transition-colors"
+            className="p-2 text-secondary hover:bg-surface-light rounded-lg transition-colors hidden md:block"
             title={t('my_stories.buttons.flipbook')}
           >
             <BookOpen size={18} />

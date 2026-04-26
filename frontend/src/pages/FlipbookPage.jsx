@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate } from "react-router";
-// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import EbookViewer from "../components/EbookViewer";
@@ -30,36 +29,54 @@ const FlipbookPage = () => {
   return (
     <div className="min-h-screen relative overflow-hidden bg-background flex flex-col justify-center items-center transition-colors duration-500 font-['Inter']">
 
-      {/* Theme Toggle */}
-      <ThemeToggle className="fixed top-24 right-6 z-50 md:top-6" />
-
-      {/* Background Glow Effect (Safe CSS) */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none dark:bg-blue-600/15 animate-pulse"></div>
-
-      {/* Floating Content */}
-      <motion.div
-        className="relative z-10 flex flex-col items-center"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
-        <motion.div
-          animate={{ y: [0, -12, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-          className="drop-shadow-2xl dark:drop-shadow-[0_20px_60px_rgba(59,130,246,0.25)]"
-        >
-          <EbookViewer chapters={storyChapters} storyTitle={storyTitle} />
-        </motion.div>
-
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+      {/* Mobile Block Message */}
+      <div className="flex md:hidden flex-col items-center justify-center p-8 text-center">
+        <div className="text-6xl mb-6">📱 ➡️ 💻</div>
+        <h2 className="text-2xl font-bold text-primary mb-4">Experiência não disponível em celulares</h2>
+        <p className="text-secondary mb-8 leading-relaxed">
+          O Livro Animado exige uma tela maior (Tablet ou Desktop) para proporcionar a melhor imersão e legibilidade.
+        </p>
+        <button
           onClick={() => navigate(-1)}
-          className="mt-10 px-8 py-3 bg-white/90 dark:bg-white/10 backdrop-blur-md border border-gray-200 dark:border-white/10 text-gray-800 dark:text-white font-semibold rounded-full shadow-lg hover:bg-white dark:hover:bg-white/20 transition-all duration-300"
+          className="px-8 py-3 bg-indigo-600 text-white rounded-xl font-bold shadow-lg"
         >
           {t('create_story.buttons.back')}
-        </motion.button>
-      </motion.div>
+        </button>
+      </div>
+
+      {/* Desktop/Tablet View */}
+      <div className="hidden md:flex flex-col items-center w-full">
+        {/* Theme Toggle */}
+        <ThemeToggle className="fixed top-24 right-6 z-50 md:top-6" />
+
+        {/* Background Glow Effect (Safe CSS) */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none dark:bg-blue-600/15 animate-pulse"></div>
+
+        {/* Floating Content */}
+        <motion.div
+            className="relative z-10 flex flex-col items-center"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+            <motion.div
+            animate={{ y: [0, -12, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            className="drop-shadow-2xl dark:drop-shadow-[0_20px_60px_rgba(59,130,246,0.25)]"
+            >
+            <EbookViewer chapters={storyChapters} storyTitle={storyTitle} />
+            </motion.div>
+
+            <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate(-1)}
+            className="mt-10 px-8 py-3 bg-white/90 dark:bg-white/10 backdrop-blur-md border border-gray-200 dark:border-white/10 text-gray-800 dark:text-white font-semibold rounded-full shadow-lg hover:bg-white dark:hover:bg-white/20 transition-all duration-300"
+            >
+            {t('create_story.buttons.back')}
+            </motion.button>
+        </motion.div>
+      </div>
 
     </div>
   );
