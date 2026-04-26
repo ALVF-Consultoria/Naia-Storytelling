@@ -23,6 +23,9 @@ Create a story divided into 5 chapters based on the following elements:
 5. Theme & Message:
 - Central message/theme: ${formData.themeMessage}
 
+6. Visual Style:
+- Estilo: ${formData.visualStyle || 'Cinematográfico'}
+
 Rules:
 - WRITE THE STORY IN: ${formData.storyLanguage || 'Portuguese'}.
 - Divide the story into 5 clear chapters.

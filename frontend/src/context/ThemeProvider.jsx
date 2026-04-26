@@ -1,6 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-
-const ThemeContext = createContext();
+import React, { useEffect, useState } from 'react';
+import { ThemeContext } from './ThemeContext';
 
 export const ThemeProvider = ({ children }) => {
     const [theme, setTheme] = useState(() => {
@@ -11,13 +10,10 @@ export const ThemeProvider = ({ children }) => {
 
     useEffect(() => {
         const root = window.document.documentElement;
-        console.log("Theme changing to:", theme); // DEBUG
         if (theme === 'dark') {
             root.classList.add('dark');
-            console.log("Added dark class to HTML");
         } else {
             root.classList.remove('dark');
-            console.log("Removed dark class from HTML");
         }
         localStorage.setItem('naia-theme', theme);
     }, [theme]);
@@ -32,5 +28,3 @@ export const ThemeProvider = ({ children }) => {
         </ThemeContext.Provider>
     );
 };
-
-export const useTheme = () => useContext(ThemeContext);

@@ -2,26 +2,65 @@
 @variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #020617;
-  --foreground: #ffffff;
+  color-scheme: light;
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --surface-light: #f1f5f9;
+
+  --primary: #0f172a;
+  --secondary: #475569;
+  --muted: #94a3b8;
+
+  --accent: #0891b2;
+  --accent-hover: #0e7490;
+  --magic: #7c3aed;
 }
 
-html,
-body {
-  overflow: visible !important;
+.dark {
+  color-scheme: dark;
+  --background: #09090b;
+  --surface: #18181b;
+  --surface-light: #27272a;
+
+  --primary: #f8fafc;
+  --secondary: #a1a1aa;
+  --muted: #52525b;
+
+  --accent: #06b6d4;
+  --accent-hover: #0891b2;
+  --magic: #8b5cf6;
 }
 
-body {
-  font-family: system-ui, sans-serif;
-  @apply bg-gray-50 text-gray-900 transition-colors duration-300;
+@theme {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-light: var(--surface-light);
+
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-muted: var(--muted);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-magic: var(--magic);
+
+  --font-sans: 'Inter', sans-serif;
+  --font-display: 'Outfit', sans-serif;
 }
 
-:root.dark body {
-  @apply bg-[#050510] text-white;
-  background-color: #050510;
-  /* Fallback */
-  color: #ffffff;
-  /* Fallback */
+
+html, body {
+  overflow-x: hidden;
+  background-color: var(--color-background);
+  color: var(--color-secondary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Ensure strong text contrast */
+h1, h2, h3, h4, h5, h6, strong {
+  color: var(--color-primary);
+  font-family: var(--font-display);
 }
 
 /* 3D Utilities */

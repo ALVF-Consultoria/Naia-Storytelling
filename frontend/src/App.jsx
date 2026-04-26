@@ -1,9 +1,9 @@
 import React, { Suspense } from 'react'
 import MainRouter from './routers/MainRouter'
-import { StoryProvider } from "./context/StoryContext";
+import { StoryProvider } from "./context/StoryProvider";
 
 const Loading = () => (
-  <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
+  <div className="min-h-screen flex items-center justify-center bg-background text-primary">
     <div className="text-2xl font-bold animate-pulse">Loading NAIA...</div>
   </div>
 );

@@ -64,7 +64,24 @@ const resources = {
           plot: "Plot & Climax",
           plot_desc: "The greatest challenge and the final confrontation.",
           theme: "Theme & Message",
-          theme_desc: "The essence and meaning of your narrative."
+          theme_desc: "The essence and meaning of your narrative.",
+          visualStyle: "Visual Style",
+          visualStyle_desc: "Choose the artistic style for your story illustrations."
+        },
+        fields: {
+          protagonistName: { label: "Protagonist Name", placeholder: "Ex: Arthur" },
+          protagonistDescription: { label: "Protagonist Description", placeholder: "Ex: Young blacksmith with an innocent heart." },
+          protagonistGoal: { label: "Main Goal", placeholder: "Ex: Retrieve the stolen magical sword." },
+          antagonistNature: { label: "Antagonist Nature", placeholder: "Ex: The Dark Queen, consumed by envy." },
+          conflictStartingPoint: { label: "Conflict Starting Point", placeholder: "Ex: He receives a mysterious letter on a rainy day." },
+          settingLocation: { label: "Location", placeholder: "Ex: Kingdom of Eldoria" },
+          settingTime: { label: "Time Period (year)", placeholder: "Ex: 1423" },
+          settingTone: { label: "Tone & Atmosphere", placeholder: "Ex: Melancholic, with touches of hope." },
+          storyLanguage: { label: "Story Language", placeholder: "Ex: Portuguese, English, Spanish..." },
+          plotObstacle: { label: "The Greatest Obstacle", placeholder: "Ex: Being captured and having to escape a flying dungeon." },
+          plotClimax: { label: "Climactic Action", placeholder: "Ex: Final magical duel at the top of the Antagonist's tower." },
+          themeMessage: { label: "Central Message / Theme", placeholder: "Ex: True strength lies in kindness." },
+          visualStyle: { label: "Visual Style", placeholder: "" }
         },
         buttons: {
           back: "Back",
@@ -102,6 +119,27 @@ const resources = {
         placeholder: "Type your question...",
         button: "Ask NAIA",
         button_loading: "Thinking..."
+      },
+      navbar: {
+        home: "Home",
+        create: "Create",
+        library: "Library"
+      },
+      login: {
+        email_label: "IDENTIFICATION (EMAIL)",
+        email_placeholder: "adventurer@naia.com",
+        password_label: "ACCESS KEY (PASSWORD)",
+        password_placeholder: "••••••••",
+        submit: "Enter the Arena ✦"
+      },
+      register: {
+        username_label: "USERNAME (UNIQUE ID)",
+        username_placeholder: "adventurer_naia.01",
+        email_label: "IDENTIFICATION (EMAIL)",
+        email_placeholder: "your@email.com",
+        password_label: "ACCESS KEY (PASSWORD)",
+        password_placeholder: "••••••••",
+        submit: "Consecrate Registration ✦"
       }
     }
   },
@@ -165,7 +203,24 @@ const resources = {
           plot: "Enredo e Clímax",
           plot_desc: "O maior desafio e o confronto final.",
           theme: "Tema e Mensagem",
-          theme_desc: "A essência e o significado da sua narrativa."
+          theme_desc: "A essência e o significado da sua narrativa.",
+          visualStyle: "Estilo Visual",
+          visualStyle_desc: "Escolha o estilo artístico para as ilustrações da sua história."
+        },
+        fields: {
+          protagonistName: { label: "Nome do Protagonista", placeholder: "Ex: Arthur" },
+          protagonistDescription: { label: "Descrição do Protagonista", placeholder: "Ex: Jovem ferreiro com coração inocente." },
+          protagonistGoal: { label: "Objetivo Principal", placeholder: "Ex: Recuperar a espada mágica roubada." },
+          antagonistNature: { label: "Natureza do Antagonista", placeholder: "Ex: A Rainha Sombria, consumida pela inveja." },
+          conflictStartingPoint: { label: "Ponto de Partida do Conflito", placeholder: "Ex: Ele recebe uma carta misteriosa em um dia chuvoso." },
+          settingLocation: { label: "Localização", placeholder: "Ex: Reino de Eldoria" },
+          settingTime: { label: "Época (ano)", placeholder: "Ex: 1423" },
+          settingTone: { label: "Tom e Atmosfera", placeholder: "Ex: Melancólico, com toques de esperança." },
+          storyLanguage: { label: "Idioma da História", placeholder: "Ex: Português, Inglês, Espanhol..." },
+          plotObstacle: { label: "O Maior Obstáculo", placeholder: "Ex: Ser capturado e ter que escapar de uma masmorra voadora." },
+          plotClimax: { label: "Ação Climática", placeholder: "Ex: Duelo mágico final no topo da torre do Antagonista." },
+          themeMessage: { label: "Mensagem Central / Tema", placeholder: "Ex: A verdadeira força reside na bondade." },
+          visualStyle: { label: "Estilo Visual", placeholder: "" }
         },
         buttons: {
           back: "Voltar",
@@ -203,6 +258,27 @@ const resources = {
         placeholder: "Digite sua pergunta...",
         button: "Perguntar",
         button_loading: "Pensando..."
+      },
+      navbar: {
+        home: "Início",
+        create: "Criar",
+        library: "Biblioteca"
+      },
+      login: {
+        email_label: "IDENTIFICAÇÃO (EMAIL)",
+        email_placeholder: "aventureiro@naia.com",
+        password_label: "CHAVE DE ACESSO (SENHA)",
+        password_placeholder: "••••••••",
+        submit: "Entrar na Arena ✦"
+      },
+      register: {
+        username_label: "USERNAME (ID ÚNICO)",
+        username_placeholder: "aventureiro_naia.01",
+        email_label: "IDENTIFICAÇÃO (EMAIL)",
+        email_placeholder: "seu@email.com",
+        password_label: "CHAVE DE ACESSO (SENHA)",
+        password_placeholder: "••••••••",
+        submit: "Consagrar Registro ✦"
       }
     }
   }

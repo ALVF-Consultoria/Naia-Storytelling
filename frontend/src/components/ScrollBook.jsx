@@ -125,7 +125,7 @@ const ScrollBook = () => {
     const universePageStyle = "bg-gradient-to-br from-[#0a0a2a] via-[#1a1a4a] to-black text-white border-r border-blue-500/30";
 
     return (
-        <div ref={containerRef} className="relative h-[100vh] w-full flex items-center justify-center bg-[#050510] perspective-[1500px] overflow-hidden">
+        <div ref={containerRef} className="relative h-100vh w-full flex items-center justify-center bg-[#050510] perspective-[1500px] overflow-hidden">
 
             <div
                 ref={bookRef}

@@ -10,8 +10,18 @@ export const INITIAL_FORM_DATA = {
   plotObstacle: '',
   plotClimax: '',
   themeMessage: '',
+  visualStyle: 'Cinematográfico', // Estilo padrão
   storyLanguage: 'Portuguese', // Default to Portuguese per user context
 };
+
+export const visualStyles = [
+  { id: 'Cinematográfico', label: 'Cinematográfico', icon: '🎬', description: 'Cenas épicas e iluminação dramática.' },
+  { id: 'Anime', label: 'Anime', icon: '🇯🇵', description: 'Estilo clássico de animação japonesa.' },
+  { id: 'Cyberpunk', label: 'Cyberpunk', icon: '🧬', description: 'Neon, tecnologia e ambiente futurista.' },
+  { id: 'Aquarela', label: 'Aquarela', icon: '🎨', description: 'Traços suaves e cores fluidas.' },
+  { id: 'Realista', label: 'Realista', icon: '📸', description: 'Como uma fotografia de alta definição.' },
+  { id: 'Épico/Fantasia', label: 'Épico/Fantasia', icon: '⚔️', description: 'Ilustrações de livros de fantasia clássica.' },
+];
 
 export const stepsConfig = [
   {
@@ -64,6 +74,15 @@ export const stepsConfig = [
     description: "The essence and meaning of your narrative.",
     fields: [
       { id: 'themeMessage', label: 'Central Message / Theme', type: 'textarea', placeholder: 'Ex: True strength lies in kindness.' },
+    ],
+  },
+  {
+    id: 'visualStyle',
+    title: "Visual Style",
+    iconName: "Zap",
+    description: "Choose the artistic style for your story illustrations.",
+    fields: [
+      { id: 'visualStyle', label: 'Estilo Visual', type: 'visual_selector' },
     ],
   },
 ];

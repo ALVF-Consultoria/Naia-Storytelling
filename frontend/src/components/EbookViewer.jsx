@@ -1,14 +1,16 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import HTMLFlipBook from "react-pageflip";
 import SparklesCore from "./Sparkles";
 
-const splitStoryIntoPages = (storyText, wordsPerPage = 50) => {
-  const chapters = storyText.split(/\n(?=Capítulo \d+:)/);
+const splitStoryIntoPages = (chapters, wordsPerPage = 50) => {
   const pages = [];
 
   chapters.forEach((chapter) => {
-    const words = chapter.split(" ");
+    // Adicionar título do capítulo como uma página ou no início da página
+    const content = `\n${chapter.title?.toUpperCase()}\n\n${chapter.content}`;
+    const words = content.split(" ");
     for (let i = 0; i < words.length; i += wordsPerPage) {
       pages.push(words.slice(i, i + wordsPerPage).join(" "));
     }
@@ -17,12 +19,15 @@ const splitStoryIntoPages = (storyText, wordsPerPage = 50) => {
   return pages;
 };
 
-const EbookViewer = ({ storyText, storyTitle = "My Story" }) => {
+const EbookViewer = ({ storyText, chapters, storyTitle = "My Story" }) => {
   const flipBookRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [showSparkles, setShowSparkles] = useState(false);
-  const pages = splitStoryIntoPages(storyText, 50);
-  const totalPages = pages.length;
+  
+  const finalChapters = chapters || [];
+  const pages = finalChapters.length > 0 
+    ? splitStoryIntoPages(finalChapters, 50)
+    : (storyText ? splitStoryIntoPages([{ title: "", content: storyText }], 50) : []);
 
   const pageStyle = "bg-gradient-to-br from-[#d3d3d3] to-[#f5f5f5] text-gray-900";
 
@@ -71,7 +76,7 @@ const EbookViewer = ({ storyText, storyTitle = "My Story" }) => {
       >
         {/* Left volume effect */}
         <div
-          className="absolute -left-2 top-2 w-1.5 h-[96%] bg-gradient-to-b from-gray-400/60 to-gray-600/40 rounded-l-md shadow-md transition-opacity duration-300"
+          className="absolute -left-2 top-2 w-1.5 h-[96%] bg-linear-to-b from-gray-400/60 to-gray-600/40 rounded-l-md shadow-md transition-opacity duration-300"
           style={{ opacity: leftOpacity }}
         />
         <div
@@ -81,7 +86,7 @@ const EbookViewer = ({ storyText, storyTitle = "My Story" }) => {
 
         {/* Right volume effect */}
         <div
-          className="absolute -right-2 top-2 w-1.5 h-[96%] bg-gradient-to-b from-gray-400/60 to-gray-600/40 rounded-r-md shadow-md transition-opacity duration-300"
+          className="absolute -right-2 top-2 w-1.5 h-[96%] bg-linear-to-b from-gray-400/60 to-gray-600/40 rounded-r-md shadow-md transition-opacity duration-300"
           style={{ opacity: rightOpacity }}
         />
         <div
@@ -108,7 +113,7 @@ const EbookViewer = ({ storyText, storyTitle = "My Story" }) => {
           onFlip={handleFlip}
         >
           {/* FRONR COVER */}
-          <div className="bg-gradient-to-br from-gray-700 to-gray-800 text-white flex items-center justify-center p-10 border border-gray-900 rounded-xl shadow-inner">
+          <div className="bg-linear-to-br from-gray-700 to-gray-800 text-white flex items-center justify-center p-10 border border-gray-900 rounded-xl shadow-inner">
             <div className="text-center">
               <p className="opacity-90 text-2xl font-serif font-bold drop-shadow-md mb-2">
                 {storyTitle}
@@ -123,7 +128,7 @@ const EbookViewer = ({ storyText, storyTitle = "My Story" }) => {
               key={idx}
               className={`relative p-8 flex flex-col items-start justify-start text-lg leading-relaxed font-serif ${pageStyle}`}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/[0.03] to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-linear-to-r from-transparent via-black/5 to-transparent pointer-events-none" />
               <div className="absolute inset-0 border border-black/5 rounded-xl pointer-events-none" />
               <p className="whitespace-pre-wrap relative z-10 text-justify">{page}</p>
               <span className="absolute bottom-4 right-6 text-xs text-gray-500 font-sans">{idx + 1}</span>
@@ -136,7 +141,7 @@ const EbookViewer = ({ storyText, storyTitle = "My Story" }) => {
           </div>
 
           {/* BACK COVER (Matches Front Cover Style to simulate Closing) */}
-          <div className="bg-gradient-to-br from-gray-700 to-gray-800 text-white flex items-center justify-center p-10 border border-gray-900 rounded-xl shadow-inner">
+          <div className="bg-linear-to-br from-gray-700 to-gray-800 text-white flex items-center justify-center p-10 border border-gray-900 rounded-xl shadow-inner">
             <div className="text-center">
               <p className="opacity-90 text-xl font-serif italic mb-2">
                 The End

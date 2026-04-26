@@ -1,6 +1,7 @@
 // src/components/IdeaLamp.jsx
 import React, { useState } from "react";
 import { Lamp } from "lucide-react";
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import { promptAPI } from "../services/promptAPI";
 import { useTranslation } from "react-i18next";

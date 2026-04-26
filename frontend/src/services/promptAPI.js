@@ -18,14 +18,24 @@ export async function checkModelAvailability() {
 /**
  * Função principal para enviar um prompt, agora via API.
  */
-export async function promptAPI(promptText) {
+export async function promptAPI(promptText, visualStyle = "Cinematográfico") {
     try {
+        const token = localStorage.getItem("naia_token");
+        const headers = {
+            "Content-Type": "application/json",
+        };
+        
+        if (token) {
+            headers["Authorization"] = `Bearer ${token}`;
+        }
+
         const response = await fetch(API_URL, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ prompt: promptText }),
+            headers: headers,
+            body: JSON.stringify({ 
+                prompt: promptText,
+                visualStyle: visualStyle 
+            }),
         });
 
         if (!response.ok) {
@@ -34,7 +44,8 @@ export async function promptAPI(promptText) {
         }
 
         const data = await response.json();
-        return data.text;
+        // Retornamos tudo agora: text, chapters, title, etc.
+        return data;
     } catch (err) {
         console.error("Erro na promptAPI:", err);
         return `[ERRO] Falha ao comunicar com a IA: ${err.message}. Verifique se a chave de API está configurada e o backend rodando.`;

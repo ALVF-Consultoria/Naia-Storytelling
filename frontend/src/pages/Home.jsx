@@ -1,5 +1,6 @@
 import React, { useRef, useLayoutEffect } from "react";
 import { Link } from "react-router-dom";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import gsap from "gsap";
@@ -124,7 +125,7 @@ const Home = () => {
   }, [logoLoaded]); // Re-run when loaded
 
   return (
-    <div ref={containerRef} className="relative min-h-screen flex flex-col bg-[#050510] text-white overflow-hidden selection:bg-blue-500 selection:text-white">
+    <div ref={containerRef} className="relative min-h-screen flex flex-col bg-background text-primary overflow-hidden selection:bg-blue-500 selection:text-white">
 
       {/* TRAVELING LOGO */}
       <img
@@ -155,7 +156,7 @@ const Home = () => {
             alt="NAIA AI Logo"
             className="h-24 md:h-32 w-auto object-contain drop-shadow-[0_0_25px_rgba(59,130,246,0.6)]"
           />
-          <h1 className="text-6xl md:text-8xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-white/50 drop-shadow-2xl mt-4">NAIA</h1>
+          <h1 className="text-6xl md:text-8xl font-black tracking-tighter bg-clip-text text-transparent bg-linear-to-b from-white to-white/50 drop-shadow-2xl mt-4">NAIA</h1>
         </motion.div>
 
         <motion.p
@@ -180,7 +181,7 @@ const Home = () => {
             <span className="relative z-10 flex items-center gap-2">
               {t('hero.cta_start')}
             </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="absolute inset-0 bg-linear-to-r from-blue-400 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </Link>
           <Link
             to="/stories-page"
@@ -203,7 +204,7 @@ const Home = () => {
       </main>
 
       {/* Showcase Section */}
-      <section ref={showcaseRef} className="relative z-10 py-32 bg-gradient-to-b from-transparent to-[#02020a]">
+      <section ref={showcaseRef} className="relative z-10 py-32 bg-linear-to-b from-transparent to-[#02020a]">
         <div className="container mx-auto px-6 text-center mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -235,7 +236,7 @@ const Home = () => {
           transition={{ duration: 0.8 }}
         >
           <h2 className="text-5xl md:text-7xl font-bold tracking-tight mb-8 whitespace-pre-line">
-            {t('hero.ready_creator')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">{t('hero.creator_highlight')}</span>
+            {t('hero.ready_creator')} <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-purple-500">{t('hero.creator_highlight')}</span>
           </h2>
           <Link
             to="/create-history"

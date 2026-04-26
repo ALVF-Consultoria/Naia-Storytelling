@@ -1,0 +1,23 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: naia-mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: naia_storytelling
+      MYSQL_USER: user_naia
+      MYSQL_PASSWORD: password_naia
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - naia-network
+
+networks:
+  naia-network:
+    driver: bridge
+
+volumes:
+  mysql_data:

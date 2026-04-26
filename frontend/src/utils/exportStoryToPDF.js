@@ -24,7 +24,7 @@ export function exportStoryToPDF(title, storyText) {
 
   let y = 110;
 
-  paragraphs.forEach((paragraph, i) => {
+  paragraphs.forEach((paragraph) => {
     const lines = doc.splitTextToSize(paragraph.trim(), pageWidth);
 
     lines.forEach((line) => {

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, ArrowRight, BookOpen, User, Zap, Globe, MessageSquare } from 'lucide-react';
 import TopWizardProgress from "./TopWizardProgress";
-import { useStory } from "../context/StoryContext";
-import { INITIAL_FORM_DATA, stepsConfig } from "../constants/storySteps";
+import { useStory } from "../hooks/useStory";
+import { INITIAL_FORM_DATA, stepsConfig, visualStyles } from "../constants/storySteps";
 import { useTranslation } from "react-i18next";
 
 const iconMap = { User, Zap, Globe, BookOpen, MessageSquare };
@@ -17,13 +17,13 @@ const FormSummary = ({ data, onRestart, onGenerateStory, onBack, isSubmitting })
       {stepsConfig.map((step, index) => (
         <div key={index} className="bg-white dark:bg-white/5 p-4 rounded-xl shadow-md border-l-4 border-blue-400 dark:border-blue-500 dark:backdrop-blur-sm">
           <h3 className="flex items-center text-xl font-semibold text-blue-600 dark:text-blue-400 mb-2">
-            {React.createElement(iconMap[step.iconName], { className: 'w-5 h-5 mr-2' })}
+            {React.createElement(iconMap[step.iconName] || MessageSquare, { className: 'w-5 h-5 mr-2' })}
             {t(`create_story.steps.${step.id}`)}
           </h3>
           <ul className="list-disc ml-5 space-y-1 text-gray-700 dark:text-gray-300">
             {step.fields.map(field => (
               <li key={field.id}>
-                <span className="font-medium text-gray-800 dark:text-gray-200">{field.label}:</span> {String(data[field.id] || t('create_story.summary.not_filled'))}
+                <span className="font-medium text-gray-800 dark:text-gray-200">{t(`create_story.fields.${field.id}.label`, { defaultValue: field.label })}:</span> {String(data[field.id] || t('create_story.summary.not_filled'))}
               </li>
             ))}
           </ul>
@@ -41,12 +41,12 @@ const FormSummary = ({ data, onRestart, onGenerateStory, onBack, isSubmitting })
   );
 };
 
-const CurrentStep = ({ step, formData, handleChange, currentStep, totalSteps, handleNext, handleBack, isStepValid }) => {
+const CurrentStep = ({ step, formData, handleChange, currentStep, totalSteps, handleNext, handleBack, isStepValid, handleFieldChange }) => {
   const { t } = useTranslation();
   return (
     <div className="space-y-6">
       <h2 className="text-3xl font-bold text-gray-800 dark:text-white flex items-center">
-        {React.createElement(iconMap[step.iconName], { className: 'w-7 h-7 mr-3 text-blue-500 dark:text-blue-400' })}
+        {React.createElement(iconMap[step.iconName] || MessageSquare, { className: 'w-7 h-7 mr-3 text-blue-500 dark:text-blue-400' })}
         {t(`create_story.steps.${step.id}`)}
       </h2>
 
@@ -54,14 +54,35 @@ const CurrentStep = ({ step, formData, handleChange, currentStep, totalSteps, ha
 
       {step.fields.map(field => (
         <div key={field.id}>
-          <label htmlFor={field.id} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{field.label}</label>
-          {field.type === 'textarea' ? (
+          <label htmlFor={field.id} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            {t(`create_story.fields.${field.id}.label`, { defaultValue: field.label })}
+          </label>
+          
+          {field.type === 'visual_selector' ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4">
+              {visualStyles.map((style) => (
+                <div
+                  key={style.id}
+                  onClick={() => handleFieldChange(field.id, style.id)}
+                  className={`cursor-pointer p-4 rounded-xl border-2 transition-all duration-300 flex flex-col items-center text-center gap-2 ${
+                    formData[field.id] === style.id
+                      ? 'border-blue-500 bg-blue-500/10 shadow-lg scale-105'
+                      : 'border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700'
+                  }`}
+                >
+                  <span className="text-3xl">{style.icon}</span>
+                  <span className="font-bold text-sm text-gray-900 dark:text-white">{style.label}</span>
+                  <span className="text-[10px] text-gray-500 dark:text-gray-400 leading-tight">{style.description}</span>
+                </div>
+              ))}
+            </div>
+          ) : field.type === 'textarea' ? (
             <textarea
               id={field.id}
               rows="3"
               value={formData[field.id]}
               onChange={handleChange}
-              placeholder={field.placeholder}
+              placeholder={t(`create_story.fields.${field.id}.placeholder`, { defaultValue: field.placeholder })}
               className="w-full px-4 py-2 bg-white dark:bg-[#0a0a1a] border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition duration-150 shadow-sm resize-none"
             />
           ) : (
@@ -70,7 +91,7 @@ const CurrentStep = ({ step, formData, handleChange, currentStep, totalSteps, ha
               type={field.type === 'number' ? 'text' : field.type}
               value={formData[field.id]}
               onChange={handleChange}
-              placeholder={field.placeholder}
+              placeholder={t(`create_story.fields.${field.id}.placeholder`, { defaultValue: field.placeholder })}
               className="w-full px-4 py-2 bg-white dark:bg-[#0a0a1a] border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition duration-150 shadow-sm"
             />
           )}
@@ -119,11 +140,8 @@ const StoryForm = ({ onSubmit, onStepChange }) => {
 
   const handleFieldChange = (id, value) => {
     const sanitized = id === 'cenarioEpoca' ? value.replace(/[^\d]/g, '') : value;
-    setLocalForm(prev => {
-      const next = { ...prev, [id]: sanitized };
-      updateFormData({ [id]: sanitized });
-      return next;
-    });
+    setLocalForm(prev => ({ ...prev, [id]: sanitized }));
+    updateFormData({ [id]: sanitized });
   };
 
   const isStepValid = (stepIndex) => {
@@ -189,6 +207,7 @@ const StoryForm = ({ onSubmit, onStepChange }) => {
             handleNext={handleNext}
             handleBack={handleBack}
             isStepValid={isStepValid}
+            handleFieldChange={handleFieldChange}
           />
         )}
 

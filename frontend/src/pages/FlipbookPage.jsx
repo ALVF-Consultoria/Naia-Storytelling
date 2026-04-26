@@ -1,19 +1,20 @@
 import React from "react";
 import { useNavigate } from "react-router";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import EbookViewer from "../components/EbookViewer";
-import { useStory } from "../context/StoryContext";
+import { useStory } from "../hooks/useStory";
 import ThemeToggle from "../components/ThemeToggle";
 
 const FlipbookPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { storyData, storyTitle } = useStory();
+  const { storyChapters, storyTitle } = useStory();
 
-  if (!storyData) {
+  if (!storyChapters || storyChapters.length === 0) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-[#050510] text-gray-900 dark:text-white transition-colors duration-300 font-['Inter']">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background text-primary transition-colors duration-300 font-['Inter']">
         <ThemeToggle className="fixed top-6 right-6" />
         <p className="text-xl mb-4 opacity-80">{t('my_stories.empty_title')}</p>
         <button
@@ -27,7 +28,7 @@ const FlipbookPage = () => {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gray-100 dark:bg-[#050510] flex flex-col justify-center items-center transition-colors duration-500 font-['Inter']">
+    <div className="min-h-screen relative overflow-hidden bg-background flex flex-col justify-center items-center transition-colors duration-500 font-['Inter']">
 
       {/* Theme Toggle */}
       <ThemeToggle className="fixed top-24 right-6 z-50 md:top-6" />
@@ -47,7 +48,7 @@ const FlipbookPage = () => {
           transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
           className="drop-shadow-2xl dark:drop-shadow-[0_20px_60px_rgba(59,130,246,0.25)]"
         >
-          <EbookViewer storyText={storyData} storyTitle={storyTitle} />
+          <EbookViewer chapters={storyChapters} storyTitle={storyTitle} />
         </motion.div>
 
         <motion.button

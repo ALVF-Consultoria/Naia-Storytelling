@@ -2,21 +2,19 @@
 import React, { useEffect, useState } from "react";
 
 const steps = [
-  "Creating Character...",
-  "Defining Setting...",
-  "Adjusting Atmosphere...",
-  "Elaborating Conflicts...",
-  "Adding Final Touches...",
-  "Oops, I made a mistake...",
-  "Redoing Story...",
-  "Fixing errors...",
-  "I think it looks good now...",
-  "Continuing...",
-  "...",
-  "......",
-  ".........",
-  "............",
-  "..............."
+  "Invocando os oráculos da narrativa...",
+  "Tecomdo os fios do destino...",
+  "Escrevendo o Capítulo 1...",
+  "Escrevendo o Capítulo 2...",
+  "Pintando cenários épicos...",
+  "Escrevendo o Capítulo 3...",
+  "Ilustrando momentos heroicos...",
+  "Escrevendo o Capítulo 4...",
+  "Capturando a essência visual...",
+  "Escrevendo o Capítulo 5...",
+  "Misturando cores e palavras...",
+  "Finalizando sua obra-prima...",
+  "Quase pronto para o mundo..."
 ];
 
 const StoryGenerationOverlay = ({ visible }) => {
