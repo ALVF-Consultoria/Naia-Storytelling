@@ -1,46 +1,58 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router";
-import EditWord from "../components/EditWord";
+import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import ThemeToggle from "../components/ThemeToggle";
-import SaveStoryButton from "../components/SaveStoryButton";
-import { useStory } from "../context/StoryContext";
+import { useStory } from "../hooks/useStory";
 import { jsPDF } from "jspdf";
+import { Maximize, Minimize } from "lucide-react";
+
+import AmbientBackground from "../components/AmbientBackground";
+import ReadingProgress from "../components/ReadingProgress";
+import StoryNarrator from "../components/StoryNarrator";
+import StoryChapter from "../components/StoryChapter";
 
 const HistoryView = () => {
   const navigate = useNavigate();
-  const { storyData, storyTitle } = useStory();
-  const [story, setStory] = useState(storyData || "");
-  const [showEditModal, setShowEditModal] = useState(false);
+  const { storyChapters, storyTitle, storySynopsis } = useStory();
+  const [isSaved, setIsSaved] = useState(false);
+  const [isFocusMode, setIsFocusMode] = useState(false);
+  const scrollRef = useRef(null);
 
-  // ✅ Function updated to correctly download PDF
   const handleDownloadPDF = () => {
-    const doc = new jsPDF({
-      unit: "pt",
-      format: "a4",
-    });
-
+    const doc = new jsPDF({ unit: "pt", format: "a4" });
     const margin = 50;
     const pageWidth = doc.internal.pageSize.getWidth() - margin * 2;
     const pageHeight = doc.internal.pageSize.getHeight();
     const lineHeight = 18;
 
-    // Title
     doc.setFont("times", "bold");
     doc.setFontSize(22);
-    doc.text(storyTitle || "My Story", pageWidth / 2 + margin, 70, {
-      align: "center",
-    });
+    doc.text(storyTitle || "Minha História", pageWidth / 2 + margin, 70, { align: "center" });
 
     doc.setFont("times", "normal");
     doc.setFontSize(12);
 
-    // Split text into paragraphs based on double line breaks
-    const paragraphs = story.split(/\n\s*\n/);
     let y = 110;
 
-    paragraphs.forEach((paragraph) => {
-      const lines = doc.splitTextToSize(paragraph.trim(), pageWidth);
+    if (storySynopsis) {
+      doc.setFont("times", "italic");
+      const lines = doc.splitTextToSize(storySynopsis, pageWidth);
+      lines.forEach(line => {
+          if (y + lineHeight > pageHeight - margin) { doc.addPage(); y = margin; }
+          doc.text(line, margin, y);
+          y += lineHeight;
+      });
+      y += 20;
+    }
 
+    doc.setFont("times", "normal");
+    storyChapters.forEach((chap) => {
+      if (y + 40 > pageHeight - margin) { doc.addPage(); y = margin; }
+      doc.setFont("times", "bold");
+      doc.text(chap.title || `Capítulo ${chap.chapterNumber}`, margin, y);
+      y += lineHeight + 5;
+
+      doc.setFont("times", "normal");
+      const lines = doc.splitTextToSize(chap.content.trim(), pageWidth);
       lines.forEach((line) => {
         if (y + lineHeight > pageHeight - margin) {
           doc.addPage();
@@ -49,108 +61,127 @@ const HistoryView = () => {
         doc.text(line, margin, y);
         y += lineHeight;
       });
-
-      y += lineHeight; // extra space between paragraphs
+      y += lineHeight; 
     });
 
-    // Footer with page numbers
     const totalPages = doc.internal.getNumberOfPages();
     for (let i = 1; i <= totalPages; i++) {
       doc.setPage(i);
       doc.setFontSize(10);
-      doc.text(
-        `Page ${i} of ${totalPages}`,
-        pageWidth / 2 + margin,
-        pageHeight - 30,
-        { align: "center" }
-      );
+      doc.text(`Página ${i} de ${totalPages}`, pageWidth / 2 + margin, pageHeight - 30, { align: "center" });
     }
 
     doc.save(`${storyTitle?.replace(/\s+/g, "_") || "story"}.pdf`);
   };
 
-  if (!story) {
+  const handleSave = () => {
+    setIsSaved(true);
+    setTimeout(() => setIsSaved(false), 3000);
+  };
+
+  if (!storyChapters || storyChapters.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen text-center">
-        <p className="text-gray-600 mb-4">No story has been generated yet.</p>
+      <div className="flex flex-col items-center justify-center h-screen bg-background text-center px-4">
+        <p className="text-secondary mb-4">Nenhuma história estruturada foi gerada ainda.</p>
         <button
           onClick={() => navigate("/create-history")}
-          className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+          className="px-6 py-3 bg-magic text-primary rounded-lg hover:-translate-y-1 hover:shadow-lg transition-all"
         >
-          Go Back and Create Story
+          Voltar para Geração
         </button>
       </div>
     );
   }
 
+  const fullStoryText = `${storyTitle}. ${storySynopsis ? storySynopsis + "." : ""} ${storyChapters.map(c => `${c.title}. ${c.content}`).join(" ")}`;
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-[#050510] p-4 sm:p-6 pb-32 flex flex-col items-center mt-16 text-gray-900 dark:text-white transition-colors duration-300">
-      <ThemeToggle className="fixed bottom-6 left-6" />
+    <div 
+      ref={scrollRef}
+      className={`bg-background p-4 sm:p-6 pb-32 flex flex-col items-center relative transition-all duration-700
+        ${isFocusMode 
+          ? "fixed inset-0 z-50 overflow-y-auto pt-20" 
+          : "min-h-screen pt-40 lg:pt-36"
+        }
+      `}
+    >
+      <AmbientBackground isFocusMode={isFocusMode} />
+      <ReadingProgress containerRef={isFocusMode ? scrollRef : null} />
 
-      <div className="w-full max-w-3xl bg-white dark:bg-white/5 dark:backdrop-blur-md p-6 rounded-xl shadow-lg dark:shadow-[0_0_30px_rgba(37,99,235,0.2)] relative border border-gray-200 dark:border-white/10 transition-all duration-300">
-        {/* Header with buttons */}
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-3 mb-4">
-          <SaveStoryButton storyText={story} title={storyTitle} />
-
-          <button
-            onClick={() => setShowEditModal(true)}
-            className="py-2 px-3 bg-yellow-500/80 text-white rounded-lg hover:bg-yellow-500 transition font-semibold shadow w-full sm:w-auto backdrop-blur-sm"
-          >
-            ✨ Refine Story
-          </button>
-        </div>
-
-        <h2 className="text-2xl sm:text-3xl font-black mb-4 text-center sm:text-left tracking-tighter text-blue-800 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-blue-400 dark:via-purple-400 dark:to-white drop-shadow-md">
-          📖 {storyTitle}
-        </h2>
-
-        {/* Story content */}
-        <div className="h-[60vh] sm:h-[70vh] overflow-y-auto border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-[#0a0a1a]/50 p-6 rounded-lg mb-6 whitespace-pre-wrap text-gray-800 dark:text-gray-200 leading-relaxed font-serif text-lg shadow-inner scrollbar-thin scrollbar-thumb-blue-600 scrollbar-track-transparent">
-          {story}
-        </div>
-
-        {/* Action buttons */}
-        <div className="flex flex-col sm:flex-row gap-3">
-          <button
-            onClick={() => navigate("/flipbook")}
-            className="w-full py-3 bg-purple-600 dark:bg-purple-600/80 text-white font-bold rounded-xl hover:bg-purple-700 dark:hover:bg-purple-600 transition duration-300 shadow-lg dark:backdrop-blur-md hover:scale-[1.02]"
-          >
-            📚 View as Flipbook
-          </button>
-
-          <button
-            onClick={handleDownloadPDF}
-            className="w-full py-3 bg-green-600 dark:bg-green-600/80 text-white font-bold rounded-xl hover:bg-green-700 dark:hover:bg-green-600 transition duration-300 shadow-lg dark:backdrop-blur-md hover:scale-[1.02]"
-          >
-            ⬇️ Download as PDF
-          </button>
-
-          <button
-            onClick={() => navigate("/create-history")}
-            className="w-full py-3 bg-gray-200 dark:bg-gray-700/80 text-gray-700 dark:text-white font-bold rounded-xl hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-300 shadow-lg dark:backdrop-blur-md hover:scale-[1.02] border border-transparent dark:border-gray-600"
-          >
-            🔁 Create New Story
-          </button>
-        </div>
+      {!isFocusMode && <ThemeToggle className="fixed bottom-6 left-6 z-50 transition-transform active:scale-95" />}
+      
+      {/* Action Bar (Sticky) */}
+      <div className={`fixed z-50 flex items-center gap-3 transition-all duration-500
+        ${isFocusMode 
+          ? "bottom-6 right-4 sm:bottom-auto sm:top-6 sm:right-6" 
+          : "bottom-6 right-4 sm:bottom-auto sm:top-32 sm:right-10"}
+      `}>
+        <StoryNarrator textToRead={fullStoryText} />
+        
+        <button
+          onClick={() => setIsFocusMode(!isFocusMode)}
+          className="flex items-center justify-center w-10 h-10 bg-surface border border-white/10 rounded-full shadow-lg text-primary hover:text-magic hover:bg-white/5 transition-colors backdrop-blur-sm"
+          title={isFocusMode ? "Sair do Modo Foco" : "Modo Foco"}
+        >
+          {isFocusMode ? <Minimize size={18} /> : <Maximize size={18} />}
+        </button>
       </div>
 
-      {/* Refine Story Modal */}
-      {showEditModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 p-4">
-          <div className="bg-white p-6 rounded-xl shadow-xl w-full max-w-2xl">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-bold text-gray-800">Refine Story</h3>
-              <button
-                onClick={() => setShowEditModal(false)}
-                className="text-gray-500 hover:text-gray-800 font-bold"
-              >
-                ✕
-              </button>
-            </div>
-            <EditWord storyText={story} setStoryText={setStory} />
+      <div className={`w-full bg-surface p-6 sm:p-10 shadow-2xl border border-white/5 relative z-10 transition-all duration-700
+        ${isFocusMode ? "max-w-3xl rounded-none sm:rounded-2xl border-x-0 sm:border-x bg-surface/95 backdrop-blur-md" : "max-w-4xl rounded-2xl"}
+      `}>
+        
+        <header className="mb-10 text-center sm:text-left border-b border-white/5 pb-8">
+            <h1 className="text-4xl sm:text-5xl font-display font-black text-primary mb-4 drop-shadow-md tracking-tight">
+                {storyTitle}
+            </h1>
+            {storySynopsis && (
+                <p className="text-lg text-muted italic leading-relaxed max-w-2xl">
+                    "{storySynopsis}"
+                </p>
+            )}
+        </header>
+
+        <main className="space-y-16">
+            {storyChapters.map((chap, index) => (
+                <StoryChapter key={index} chap={chap} />
+            ))}
+        </main>
+
+        {!isFocusMode && (
+          <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-white/5 pt-10">
+            <button
+              onClick={() => navigate("/flipbook")}
+              className="w-full py-4 bg-magic text-primary font-bold rounded-xl hover:shadow-[0_0_20px_rgba(139,92,246,0.5)] transition-all duration-300 ease-out hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2"
+            >
+              📚 Livro Animado
+            </button>
+
+            <button
+              onClick={handleDownloadPDF}
+              className="w-full py-4 bg-accent text-primary font-bold rounded-xl hover:shadow-[0_0_20px_rgba(6,182,212,0.5)] transition-all duration-300 ease-out hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2"
+            >
+              ⬇️ Baixar PDF
+            </button>
+
+            <button
+              onClick={handleSave}
+              className={`w-full py-4 font-bold rounded-xl transition-all duration-300 ease-out hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2 ${
+                  isSaved ? "bg-green-500 text-white shadow-[0_0_20px_rgba(34,197,94,0.5)]" : "bg-blue-600 text-white hover:shadow-[0_0_20px_rgba(37,99,235,0.5)]"
+              }`}
+            >
+              {isSaved ? "✅ História Salva!" : "💾 Salvar História"}
+            </button>
+
+            <button
+              onClick={() => navigate("/create-history")}
+              className="w-full py-4 bg-surface-light border border-white/10 text-primary font-bold rounded-xl hover:bg-white/10 transition-all duration-300 ease-out hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2"
+            >
+              🔁 Nova História
+            </button>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
