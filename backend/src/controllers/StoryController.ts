@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { StoryService } from "../services/StoryService";
+import { StoryService } from "../services/StoryService.js";
 
 export class StoryController {
     static async generate(req: Request, res: Response) {

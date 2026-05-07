@@ -1,6 +1,8 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import dotenv from "dotenv";
+import { Story } from "../entities/Story.js";
+import { User } from "../entities/User.js";
 
 dotenv.config();
 
@@ -14,7 +16,7 @@ export const AppDataSource = new DataSource({
     timezone: "Z", // Fixes 3-hour timezone offset by forcing UTC
     synchronize: true, // Automatically creates tables. Set to false in production.
     logging: false,
-    entities: ["src/entities/**/*.ts"],
-    migrations: ["src/migrations/**/*.ts"],
-    subscribers: ["src/subscribers/**/*.ts"],
+    entities: [Story, User],
+    migrations: [],
+    subscribers: [],
 });

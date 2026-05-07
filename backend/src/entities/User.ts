@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from "typeorm";
-import { Story } from "./Story";
+import { Story } from "./Story.js";
 
 @Entity()
 export class User {

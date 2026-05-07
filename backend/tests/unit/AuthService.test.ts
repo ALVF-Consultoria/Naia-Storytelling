@@ -1,5 +1,5 @@
-import { AuthService } from "../../src/services/AuthService";
-import { UserRepository } from "../../src/repositories/UserRepository";
+import { AuthService } from "../../src/services/AuthService.js";
+import { UserRepository } from "../../src/repositories/UserRepository.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 

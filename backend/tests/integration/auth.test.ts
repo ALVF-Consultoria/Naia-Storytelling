@@ -1,6 +1,6 @@
 import request from "supertest";
-import app from "../../src/app";
-import { setupTestDB, teardownTestDB, TestDataSource } from "../setup/test-db";
+import app from "../../src/app.js";
+import { setupTestDB, teardownTestDB, TestDataSource } from "../setup/test-db.js";
 
 // Override the real Data Source with our Fake Memory one
 jest.mock("../../src/config/data-source", () => {

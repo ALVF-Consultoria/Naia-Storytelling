@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { StoryController } from "../controllers/StoryController";
+import { StoryController } from "../controllers/StoryController.js";
 
-import { authMiddleware } from "../middleware/auth.middleware";
+import { authMiddleware } from "../middleware/auth.middleware.js";
 
 const router = Router();
 

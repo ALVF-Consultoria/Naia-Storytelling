@@ -1,9 +1,13 @@
-import { StoryRepository } from "../repositories/StoryRepository";
-import { UserRepository } from "../repositories/UserRepository";
-import { GeminiService } from "./GeminiService";
-import { ImagenService } from "./ImagenService";
+import { StoryRepository } from "../repositories/StoryRepository.js";
+import { UserRepository } from "../repositories/UserRepository.js";
+import { GeminiService } from "./GeminiService.js";
+import { ImagenService } from "./ImagenService.js";
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export class StoryService {
     static async generateStory(prompt: string, userId: number, visualStyle?: string): Promise<any> {

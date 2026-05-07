@@ -1,5 +1,5 @@
-import { AppDataSource } from "../config/data-source";
-import { User } from "../entities/User";
+import { AppDataSource } from "../config/data-source.js";
+import { User } from "../entities/User.js";
 
 export const UserRepository = AppDataSource.getRepository(User).extend({
     async findByEmail(email: string) {

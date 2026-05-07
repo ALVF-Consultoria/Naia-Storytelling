@@ -1,5 +1,5 @@
-import { AppDataSource } from "../config/data-source";
-import { Story } from "../entities/Story";
+import { AppDataSource } from "../config/data-source.js";
+import { Story } from "../entities/Story.js";
 
 export const StoryRepository = AppDataSource.getRepository(Story).extend({
     async findByUser(userId: number) {

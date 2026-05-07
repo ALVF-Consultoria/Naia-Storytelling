@@ -1,9 +1,9 @@
-import { StoryService } from "../../src/services/StoryService";
-import { StoryRepository } from "../../src/repositories/StoryRepository";
-import { UserRepository } from "../../src/repositories/UserRepository";
+import { StoryService } from "../../src/services/StoryService.js";
+import { StoryRepository } from "../../src/repositories/StoryRepository.js";
+import { UserRepository } from "../../src/repositories/UserRepository.js";
 
-import { GeminiService } from "../../src/services/GeminiService";
-import { ImagenService } from "../../src/services/ImagenService";
+import { GeminiService } from "../../src/services/GeminiService.js";
+import { ImagenService } from "../../src/services/ImagenService.js";
 
 jest.mock("../../src/repositories/StoryRepository");
 jest.mock("../../src/repositories/UserRepository");

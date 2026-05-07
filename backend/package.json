@@ -1,11 +1,12 @@
 {
   "name": "naia-backend",
   "version": "1.0.0",
+  "type": "module",
   "description": "Backend API for NAIA Project",
   "main": "server.js",
   "scripts": {
-    "start": "ts-node src/server.ts",
-    "dev": "nodemon -L src/server.ts",
+    "start": "ts-node-esm src/server.ts",
+    "dev": "nodemon -L --exec \"node --loader ts-node/esm\" src/server.ts",
     "build": "tsc",
     "test": "jest",
     "test:cov": "jest --coverage"

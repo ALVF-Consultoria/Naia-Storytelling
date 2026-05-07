@@ -3,6 +3,9 @@ import { AlertTriangle, Trash2, X, Info } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useTranslation } from 'react-i18next';
 
+const API_BASE_URL = import.meta.env.API_URL || "";
+
+
 const DeleteAccountModal = ({ isOpen, onClose }) => {
     const { t } = useTranslation();
     const { token, logout } = useAuth();
@@ -16,11 +19,12 @@ const DeleteAccountModal = ({ isOpen, onClose }) => {
         setIsDeleting(true);
         setError(null);
         try {
-            const response = await fetch('/api/auth/account', {
+            const response = await fetch(`${API_BASE_URL}/api/auth/account`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
-                }
+                },
+                credentials: 'include'
             });
 
             if (response.ok) {

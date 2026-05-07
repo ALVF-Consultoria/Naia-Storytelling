@@ -9,7 +9,7 @@ import ThemeToggle from "../components/ThemeToggle";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../hooks/useAuth";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "";
+const API_BASE_URL = import.meta.env.API_URL || "";
 
 const StoriesPage = () => {
   const { t } = useTranslation();
@@ -32,7 +32,8 @@ const StoriesPage = () => {
         const res = await fetch(`${API_BASE_URL}/api/stories`, {
           headers: {
             "Authorization": `Bearer ${token}`
-          }
+          },
+          credentials: 'include'
         });
         const data = await res.json();
         if (res.ok) {
@@ -60,7 +61,8 @@ const StoriesPage = () => {
           method: "DELETE",
           headers: {
             "Authorization": `Bearer ${token}`
-          }
+          },
+          credentials: 'include'
         });
         if (res.ok) {
           setStories(stories.filter((s) => s.id !== storyToDelete));
@@ -166,7 +168,8 @@ const StoriesPage = () => {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
         },
-        body: JSON.stringify({ language })
+        body: JSON.stringify({ language }),
+        credentials: 'include'
       });
 
       setTranslationProgress(60);

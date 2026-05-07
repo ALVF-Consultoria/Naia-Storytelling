@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react'; // <--- O plugin correto para JS/JSX
 
 export default defineConfig({
   plugins: [react()],
+  envPrefix: ['VITE_', 'API_'],
   base: '/',
 
   server: {

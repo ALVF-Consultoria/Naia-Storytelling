@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { UserRepository } from "../repositories/UserRepository";
+import { UserRepository } from "../repositories/UserRepository.js";
 
 export class AuthService {
     static async register(data: any) {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "";
+const API_BASE_URL = import.meta.env.API_URL || "";
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
@@ -16,7 +16,8 @@ export function AuthProvider({ children }) {
             if (storedToken) {
                 try {
                     const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
-                        headers: { "Authorization": `Bearer ${storedToken}` }
+                        headers: { "Authorization": `Bearer ${storedToken}` },
+                        credentials: 'include'
                     });
 
                     if (response.ok) {
@@ -48,7 +49,8 @@ export function AuthProvider({ children }) {
             const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ email, password }),
+                credentials: 'include'
             });
 
             const contentType = response.headers.get("content-type");
@@ -77,7 +79,8 @@ export function AuthProvider({ children }) {
             const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, email, password })
+                body: JSON.stringify({ username, email, password }),
+                credentials: 'include'
             });
 
             const contentType = response.headers.get("content-type");
