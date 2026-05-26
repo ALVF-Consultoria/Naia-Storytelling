@@ -22,12 +22,12 @@ const isDevelopment = process.env.NODE_ENV === "development";
 const allowedOrigins = [
     frontendUrl,
     "http://localhost:5173",
-    "https://storytellingnaia.alvf.net.br" // URL fixa como garantia extra
+    "https://storytellingnaia.alvf.net.br",
+    "https://apistorytellingnaia.alvf.net.br"
 ].filter(Boolean);
 
-app.use(cors({
+const corsOptions: cors.CorsOptions = {
     origin: (origin, callback) => {
-        // No Node, 'origin' é undefined para requisições do mesmo servidor ou ferramentas como Postman
         if (!origin || allowedOrigins.includes(origin) || isDevelopment) {
             callback(null, true);
         } else {
@@ -38,7 +38,11 @@ app.use(cors({
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"]
-}));
+};
+
+// Responde preflight OPTIONS em todas as rotas antes de qualquer outra coisa
+app.options("*", cors(corsOptions));
+app.use(cors(corsOptions));
 
 // Log de requisições simplificado (MOVIDO PARA O TOPO)
 app.use((req, res, next) => {
