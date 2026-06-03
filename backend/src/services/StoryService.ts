@@ -24,23 +24,14 @@ export class StoryService {
         console.log("Gerando história estruturada...");
         const parsed = await GeminiService.generateStructuredStory(prompt, visualStyle);
 
-        // 2. Criar a história inicialmente no banco para obter o ID
-        const story = StoryRepository.create({
-            prompt: prompt,
-            content: JSON.stringify(parsed), 
-            title: parsed.title,
-            synopsis: parsed.synopsis,
-            visualStyle: visualStyle,
-            user: user
-        });
+        // Identificador temporário para nomear as imagens antes de salvar no banco
+        const tempId = Date.now().toString() + Math.floor(Math.random() * 1000).toString();
 
-        const savedStory = await StoryRepository.save(story);
-
-        // 3. Otimizar prompts de imagem em lote (Batch) para economizar requisições
+        // 2. Otimizar prompts de imagem em lote (Batch) para economizar requisições
         console.log("Otimizando prompts de imagem em lote...");
         const optimizedPrompts = await GeminiService.optimizeImagePromptsBatch(parsed.chapters, visualStyle || "Cinematográfico");
 
-        // 4. Gerar imagens para cada capítulo usando ImagenService
+        // 3. Gerar imagens para cada capítulo usando ImagenService
         const chaptersWithImages = [];
         const uploadDir = path.join(__dirname, "../../public/uploads/stories");
 
@@ -55,7 +46,7 @@ export class StoryService {
                 const imgBase64 = await ImagenService.generateImage(optimizedPrompt);
                 
                 if (imgBase64) {
-                    const fileName = `story_${savedStory.id}_ch_${chap.chapterNumber}.jpg`;
+                    const fileName = `story_temp_${tempId}_ch_${chap.chapterNumber}.jpg`;
                     const filePath = path.join(uploadDir, fileName);
                     fs.writeFileSync(filePath, Buffer.from(imgBase64, 'base64'));
                     
@@ -72,16 +63,36 @@ export class StoryService {
             }
         }
 
-        // 4. Atualizar a história com os dados estruturados finais (capítulos + URLs de imagens)
-        savedStory.chapters = chaptersWithImages;
-        await StoryRepository.save(savedStory);
-
         return { 
-            storyId: savedStory.id, 
-            title: savedStory.title, 
-            synopsis: savedStory.synopsis,
-            chapters: chaptersWithImages
+            title: parsed.title, 
+            synopsis: parsed.synopsis,
+            chapters: chaptersWithImages,
+            prompt: prompt,
+            visualStyle: visualStyle
         };
+    }
+
+    static async saveGeneratedStory(data: any, userId: number) {
+        const user = await UserRepository.findById(userId);
+        if (!user) {
+            throw new Error("User not found");
+        }
+
+        const story = StoryRepository.create({
+            prompt: data.prompt,
+            title: data.title,
+            synopsis: data.synopsis,
+            content: JSON.stringify({
+                title: data.title,
+                synopsis: data.synopsis,
+                chapters: data.chapters
+            }),
+            chapters: data.chapters,
+            visualStyle: data.visualStyle,
+            user: user
+        });
+
+        return await StoryRepository.save(story);
     }
 
     static async getUserStories(userId: number) {

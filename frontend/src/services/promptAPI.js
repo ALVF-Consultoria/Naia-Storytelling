@@ -48,6 +48,37 @@ export async function promptAPI(promptText, visualStyle = "Cinematográfico") {
     }
 }
 
+export async function saveStoryAPI(storyData) {
+    try {
+        const token = localStorage.getItem("naia_token");
+        const headers = {
+            "Content-Type": "application/json",
+        };
+        
+        if (token) {
+            headers["Authorization"] = `Bearer ${token}`;
+        }
+
+        const response = await fetch(`${API_BASE_URL}/api/save`, {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify(storyData),
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || `Erro na requisição: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (err) {
+        console.error("Erro na saveStoryAPI:", err);
+        throw err;
+    }
+}
+
 // Mantendo compatibilidade de exportação se houver outras chamadas
 export async function getSession() {
     return {

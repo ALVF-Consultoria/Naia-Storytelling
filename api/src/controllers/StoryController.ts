@@ -25,6 +25,27 @@ export class StoryController {
         }
     }
 
+    static async save(req: Request, res: Response) {
+        try {
+            const data = req.body;
+            const userId = req.user?.id;
+
+            if (!userId) {
+                return res.status(401).json({ error: 'Unauthorized' });
+            }
+
+            if (!data || !data.title || !data.chapters) {
+                return res.status(400).json({ error: 'Invalid story data' });
+            }
+
+            const savedStory = await StoryService.saveGeneratedStory(data, userId);
+            res.json(savedStory);
+        } catch (error: any) {
+            console.error("❌ Controller Save Error:", error);
+            res.status(500).json({ error: error.message || 'Error saving story' });
+        }
+    }
+
     static async list(req: Request, res: Response) {
         try {
             const userId = req.user?.id;

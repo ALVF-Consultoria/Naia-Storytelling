@@ -4,6 +4,7 @@ import ThemeToggle from "../components/ThemeToggle";
 import { useStory } from "../hooks/useStory";
 import { jsPDF } from "jspdf";
 import { Maximize, Minimize } from "lucide-react";
+import { saveStoryAPI } from "../services/promptAPI";
 
 import AmbientBackground from "../components/AmbientBackground";
 import ReadingProgress from "../components/ReadingProgress";
@@ -12,7 +13,7 @@ import StoryChapter from "../components/StoryChapter";
 
 const HistoryView = () => {
   const navigate = useNavigate();
-  const { storyChapters, storyTitle, storySynopsis } = useStory();
+  const { storyChapters, storyTitle, storySynopsis, finalStoryData } = useStory();
   const [isSaved, setIsSaved] = useState(false);
   const [isFocusMode, setIsFocusMode] = useState(false);
   const scrollRef = useRef(null);
@@ -74,9 +75,17 @@ const HistoryView = () => {
     doc.save(`${storyTitle?.replace(/\s+/g, "_") || "story"}.pdf`);
   };
 
-  const handleSave = () => {
-    setIsSaved(true);
-    setTimeout(() => setIsSaved(false), 3000);
+  const handleSave = async () => {
+    if (!finalStoryData) return;
+
+    try {
+      await saveStoryAPI(finalStoryData);
+      setIsSaved(true);
+      setTimeout(() => setIsSaved(false), 3000);
+    } catch (error) {
+      console.error("Erro ao salvar história:", error);
+      alert("Houve um erro ao salvar a história. Tente novamente.");
+    }
   };
 
   if (!storyChapters || storyChapters.length === 0) {
@@ -152,7 +161,7 @@ const HistoryView = () => {
           <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-white/5 pt-10">
             <button
               onClick={() => navigate("/flipbook")}
-              className="w-full py-4 bg-magic text-primary font-bold rounded-xl hover:shadow-[0_0_20px_rgba(139,92,246,0.5)] transition-all duration-300 ease-out hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2 hidden md:flex"
+              className="w-full py-4 bg-magic text-primary font-bold rounded-xl hover:shadow-[0_0_20px_rgba(139,92,246,0.5)] transition-all duration-300 ease-out hover:-translate-y-1 active:scale-95 hidden md:flex items-center justify-center gap-2"
             >
               📚 Livro Animado
             </button>
