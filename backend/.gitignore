@@ -94,3 +94,9 @@ dist
 # OS metadata
 .DS_Store
 Thumbs.db
+
+# Debug and test output artifacts
+*.txt
+fail_reason.json
+last_fail.json
+test.json
