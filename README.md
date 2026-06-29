@@ -62,8 +62,8 @@ This version features a **fully immersive, localized, and animated experience**,
 
 ```bash
 # Clone this repository
-git clone https://github.com/ALVF-Consultoria/naia-gemini-version.git
-cd naia-gemini-version
+git clone https://github.com/ALVF-Consultoria/Naia-Storytelling.git
+cd Naia-Storytelling
 ```
 
 ### Backend
