@@ -1,4 +1,4 @@
-# 🧠 Análise do Projeto NAIA (Gemini Version)
+# 🧠 Análise do Projeto NAIA
 
 Este documento fornece uma análise detalhada das funcionalidades e da arquitetura do projeto **NAIA**, uma plataforma avançada de escrita criativa e narrativa assistida por inteligência artificial.
 
@@ -6,7 +6,7 @@ Este documento fornece uma análise detalhada das funcionalidades e da arquitetu
 
 ## 🌟 Visão Geral
 
-O **NAIA** (sigla para *Narrative Artificial Intelligence Assistant*) é um "Oráculo de Histórias" projetado para transformar conceitos abstratos em narrativas estruturadas. O projeto utiliza o modelo **Gemini 2.0/2.5 Flash** do Google para gerar conteúdo de alta qualidade em tempo real.
+O **NAIA** (sigla para *Narrative Artificial Intelligence Assistant*) é um "Oráculo de Histórias" projetado para transformar conceitos abstratos em narrativas estruturadas. O projeto utiliza a **API do Gemini** do Google para gerar conteúdo de alta qualidade em tempo real.
 
 O diferencial do projeto não é apenas a geração de texto, mas a **experiência imersiva** que combina design moderno, animações fluidas e elementos 3D para criar um ambiente inspirador para escritores e entusiastas.
 
@@ -14,9 +14,9 @@ O diferencial do projeto não é apenas a geração de texto, mas a **experiênc
 
 ## ✨ Funcionalidades Principais
 
-### 1. 🧠 Motor de Criação com IA (Gemini)
-- **Geração Dinâmica:** Utiliza a API do Google Gemini para criar títulos, sinopses e capítulos completos a partir de um simples prompt.
-- **Refinamento Inteligente:** Funcionalidade de "Edit Word" que permite ao usuário selecionar partes do texto para que a IA sugira melhorias ou variações.
+### 1. 🧠 Motor de Criação com IA
+- **Geração Dinâmica:** Utiliza a API do Gemini para criar títulos, sinopses e 5 capítulos completos a partir de um prompt estruturado, com schema JSON forçado para garantir consistência da saída.
+- **Tradução de Histórias:** Histórias salvas podem ser clonadas e traduzidas para outro idioma sob demanda, preservando as imagens originais.
 - **Estruturação Automática:** A saída da IA é processada e organizada em um formato de fácil leitura, separando elementos narrativos.
 
 ### 2. 🎭 Experiência Visual e Interativa
@@ -32,13 +32,14 @@ O diferencial do projeto não é apenas a geração de texto, mas a **experiênc
 - **Suporte Multilíngue:** Tradução completa da interface para **Português (Brasil)** e **Inglês**, utilizando a biblioteca `i18next`.
 - **Adaptação Cultural:** Não apenas o texto, mas a lógica de exibição é adaptada para o idioma selecionado.
 
-### 5. 🗄️ Persistência de Dados (Docker + MySQL)
-- **Infraestrutura como Código:** Inclusão de um arquivo `docker-compose.yml` para instanciar rapidamente um banco de dados MySQL 8.0.
-- **Isolamento:** Uso de volumes Docker para garantir que os dados das histórias geradas sejam persistidos mesmo após a interrupção dos containers.
+### 5. 🗄️ Persistência de Dados (MySQL + TypeORM)
+- **Banco Relacional:** MySQL gerenciado para armazenamento das histórias e usuários. Em desenvolvimento local, pode-se usar Docker Compose para subir o banco rapidamente.
+- **ORM Tipado:** TypeORM com entidades `User` e `Story`; `chapters` armazenado como coluna JSON, evitando tabela separada e facilitando a evolução do schema.
 
 ### 6. 💻 Backend Robusto
-- **API Proxy:** Um servidor Express que atua como ponte segura entre o frontend e a API do Gemini, protegendo chaves de API e gerenciando o tráfego.
-- **Serviço Unificado:** O backend é configurado para servir os arquivos estáticos do frontend, facilitando o deploy em ambientes como Hostinger ou Vercel.
+- **API REST:** Servidor Express 5 com TypeScript, separado do frontend. Em produção, roda em subdomínio próprio (`apistorytellingnaia.alvf.net.br`) enquanto o frontend é servido em outro subdomínio (`storytellingnaia.alvf.net.br`).
+- **Autenticação JWT:** Registro e login de usuários com tokens JWT; middleware de autenticação protege todas as rotas de histórias.
+- **Proteção de Credenciais:** A chave da API do Gemini fica exclusivamente no backend, nunca exposta ao browser.
 
 ---
 
@@ -52,9 +53,11 @@ O diferencial do projeto não é apenas a geração de texto, mas a **experiênc
 - **Animação:** GSAP (GreenSock) para complexidade de linha do tempo e Framer Motion para componentes.
 
 ### **Backend**
-- **Runtime:** Node.js com Express.
-- **Integração AI:** SDK oficial do Google Generative AI.
-- **Segurança:** Cors e Dotenv para gerenciamento de variáveis de ambiente.
+- **Runtime:** Node.js + Express 5 + TypeScript.
+- **ORM / Banco:** TypeORM + MySQL.
+- **Autenticação:** JWT (jsonwebtoken) + bcryptjs para hash de senhas.
+- **Integração AI:** SDK oficial do Google Generative AI (`@google/generative-ai`).
+- **Segurança:** CORS com whitelist de origens, Dotenv para isolamento de credenciais.
 
 ---
 

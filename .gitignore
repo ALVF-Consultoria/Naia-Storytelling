@@ -1,0 +1,15 @@
+# Claude Code — local machine settings (permissions, hooks)
+.claude/settings.local.json
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# Root-level env (if any)
+.env
+.env.local

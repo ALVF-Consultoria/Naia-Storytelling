@@ -134,7 +134,7 @@ createdAt, user (FK → User, CASCADE DELETE)
 
 ## Frontend
 
-**Stack:** React 18, Vite, Tailwind CSS, React Router v6, i18next, Three.js / @react-three/fiber, Framer Motion, react-pageflip, jsPDF
+**Stack:** React 19, Vite, Tailwind CSS, React Router v7, i18next, Three.js / @react-three/fiber, GSAP (ScrollTrigger), Framer Motion, react-pageflip, jsPDF
 
 ### State Architecture
 
